@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes adresses - Brunch Go{% endblock %}
+
+{% block main %}
+
+<h1>Mes adresses</h1>
+<a href="{{ path('app_account_address_add') }}" class="btn btn-primary float-end btn-sm mx-5">Ajouter une adresse</a>
+<div class="mx-5">Ici vous pouvez gérer vos adresses.<br>
+<a href="{{ path('app_account') }}">Retour à mon compte</a><br><br>
+</div>
+{% if app.user.addresses|length == 0 %}
+    <p class="text-center">Vous n'avez pas encore d'adresse dans votre compte client.<br>Pour en ajouter une, <a href="{{path('app_account_address_add') }}">cliquez ici</a></p>
+{% else %}
+<div class="row mx-5">
+            {% for address in app.user.addresses %}
+                <div class="col-md-4">
+                    <div class="card bg-primary" style="width: 15rem;">
+                        <div class="card-body">
+                            <h5 class="card-title" style="color:#E6E6E6">{{ address.name }}</h5>
+                            <p class"card-text" style="color:#E6E6E6">
+                            {{ address.address }},<br>
+                            {{ address.postal }} - {{ address.city }}
+                            </p>                            
+                            {# <a href="{{ path('account_address_edit', {'id': address.id}) }}">Modifier</a> | <a href="{{ path('account_address_delete', {'id' : address.id}) }}">Supprimer</a> #}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+    <hr>
+
+{% endblock %}

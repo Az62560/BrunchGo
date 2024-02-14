@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ formule.name }}{% endblock %}
+
+   {% block main %}
+  
+{# <div class="container" id="show"></div> #}
+      <div class="row justify-content-around bg-secondary text-success" style="max-width: 45rem; ">
+  
+        <div class="col-md-4">
+            <img src="/uploads/images/{{ formule.illustration }}" alt="{{ formule.name }}" class="img-fluid rounded border border-3 m-4">
+        </div>
+        <div class="col-md-4">
+            <h3>{{ formule.name }}</h3>
+            <p>{{ formule.subtitle }}</p>
+            <span class="product-page-price">{{ (formule.price /100)|number_format(2, ',', '.')  }} €</span>
+            <hr>
+            <p>
+                {{ formule.description |raw }}   
+                {# <span>{{ formule.Products |raw }}</span><br>     #}
+            </p>
+            {# <a href="{{ path('add_to_cart', { 'id' : formule.id }) }}" class="btn btn-primary">Ajouter au panier</a> #}
+        </div>       
+    </div>
+    <hr>
+    <div class="text-center">
+<h3>Nos meilleures ventes</h3>
+<p>Découvrez nos articles les plus vendus.</p>
+</div>
+ <div class="row">
+
+<ul>
+    {% for product in formule.Products %}
+        <li>{{ product.name }}</li> 
+         {{form(form)}}
+        {% endfor %}
+</ul>
+
+    {# {% for formules in formule %}
+      <div class="col-md-3">
+        {% include "formules/single_formule.html.twig" %}
+      </div>
+    {% endfor %}
+  </div> <!-- /.row --> #}
+{% endblock %}

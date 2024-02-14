@@ -1,0 +1,113 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'Inria Sans', sans-serif;
+    font-size: 22px;
+}
+#navbarNav{
+    color: #C7A37F;
+}
+/* html{
+    height: 100%;
+}
+
+body{
+    min-height: 100%;
+    position: relative;
+    background-color: #C7A37F;
+} */
+
+#navbar{
+    background-color: #1F1E1E;
+    color: #C7A37F;
+    align-items: center;
+    justify-content: space-evenly;
+        a{
+    
+            color: #C7A37F;
+            text-decoration: none;
+        }
+}
+.main{
+    background-color: #C7A37F;
+    height: 100%;
+    padding-bottom: 0;
+}
+
+#footer{
+    background-color: #1F1E1E;
+    bottom: 0;
+    width: 100%;
+        a{
+            color: #C7A37F;
+            text-decoration: none;
+        }
+}
+
+.form{
+    margin: 0 100px 0 100px;   
+}
+
+.background{
+    background-image: url('/img/con3.jpg');
+    background-size: cover; /* Ajuste la taille de l'image pour remplir la totalité de la fenêtre */
+    background-position: center; /* Centre l'image par rapport à la fenêtre */
+    background-repeat: no-repeat; /* Empêche la répétition de l'image */
+}
+
+.account-item {
+    padding: 70px;
+    background-color: #4C6A7D;
+ }
+ 
+.account-item a {
+     text-transform: uppercase;
+     color: #E6E6E6;
+     font-size: 13px;
+     font-weight: bold;
+     text-decoration: none;
+ }
+ 
+.account-item a:hover {
+     color: #E6E6E6;
+     text-decoration: none;
+ }
+
+.icons {
+    height: 40px;
+}
+
+#card-formule{
+    background-color: #E6E6E6;
+    min-height: 33rem;
+    
+}
+
+#card-img{
+    height: 300px;
+}
+
+h1{
+    text-align: center;
+    padding: 50px 0 50px 0;
+}
+.cardfoot{
+    background-color: #C7A37F;
+}
+.ok{
+    background-image: url(/img/paris1.jpeg);
+    background-size: cover; /* Ajuste la taille de l'image pour remplir la totalité de la fenêtre */
+    background-position: center; /* Centre l'image par rapport à la fenêtre */
+    background-repeat: no-repeat; /* Empêche la répétition de l'image */
+}
+#show{
+    background-color: #1F1E1E;
+    border: solid;
+    border:white;
+    height: 2rem;
+}
+
+.row.formules-container{
+    margin : 0 0 0 5px;
+    
+}

@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nos formules - BRUNCHGO {% endblock %}
+
+{% block main %}
+    <div class="ok">
+        <h1>Nos formules</h1>
+<div class="row formules-container">
+{# //boucle 'for' pour afficher nos formules      #}
+{% for formule in formules %}
+{# //division de la page en trois pour afficher les cartes formules #}
+    <div class="col-md-4">
+      <div class="container-fluid-sm text-center">
+        <div class="card mb-5" id="card-formule">
+          <img src="uploads/images/{{ formule.illustration }}" class="object-fit-cover border rounded img-fluid card-img-top" id="card-img"> 
+          <div class="card-body">
+            <h5 class="card-title">{{ formule.name}}</h5>
+            <span class="card-text">{{ formule.subtitle }}</span><br>
+            <span>{{ formule.description |raw}}</span><br>
+            </div>
+            <div class="bg-success card-footer text-center">
+            <a href="{{ path('formule', {'slug' : formule.slug}) }}"><span class="formule-price mt-5">{{ (formule.price /100)|number_format(2, ',', '.')  }} € </span><br>
+            Choisir cette formule</a>
+          </div>
+        </div>
+      </div>
+    </div>
+{% endfor %}
+</div>
+</div>
+
+
+
+{% endblock %}
+
+
