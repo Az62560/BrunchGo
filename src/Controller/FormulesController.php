@@ -44,4 +44,12 @@ class FormulesController extends AbstractController
             
         ]);
     }
+    public function perso()
+    {
+        $perso = new Personnalisation();
+        $form = $this->createForm()
+        return $this->render('formules/show/html/twig',[
+            'form' =>$form->createView()
+        ])
+    }
 }
