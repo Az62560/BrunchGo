@@ -1,45 +1,31 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}{{ formule.name }}{% endblock %}
-
+{# Presentation de la formule #}
    {% block main %}
-  
-{# <div class="container" id="show"></div> #}
-      <div class="row justify-content-around bg-secondary text-success" style="max-width: 45rem; ">
-  
-        <div class="col-md-4">
-            <img src="/uploads/images/{{ formule.illustration }}" alt="{{ formule.name }}" class="img-fluid rounded border border-3 m-4">
+  <div class="row justify-content-center bg-secondary py-1 text-primary">
+  <div class="col-md-3 mt-5">
+            <img src="/uploads/images/{{ formule.illustration }}" alt="{{ formule.name }}" class="img-fluid rounded border border-3 m-3">
         </div>
-        <div class="col-md-4">
-            <h3>{{ formule.name }}</h3>
+        <div class="col-md-6 mx-4 mt-5">
+            <h3 class="text-success">{{ formule.name }}</h3>
             <p>{{ formule.subtitle }}</p>
             <span class="product-page-price">{{ (formule.price /100)|number_format(2, ',', '.')  }} €</span>
             <hr>
-            <p>
-                {{ formule.description |raw }}   
-                {# <span>{{ formule.Products |raw }}</span><br>     #}
-            </p>
-            {# <a href="{{ path('add_to_cart', { 'id' : formule.id }) }}" class="btn btn-primary">Ajouter au panier</a> #}
-        </div>       
-    </div>
-    <hr>
-    <div class="text-center">
-<h3>Nos meilleures ventes</h3>
-<p>Découvrez nos articles les plus vendus.</p>
-</div>
- <div class="row">
+            <p>{{ formule.description |raw }}</p>
+        <hr>
 
-<ul>
-    {% for product in formule.Products %}
-        <li>{{ product.name }}</li> 
-         {{form(form)}}
-        {% endfor %}
-</ul>
+{# Personnalisation de la formule avec un menu deroulant des catégories et les produits. #}
+<h3 class="text-success">Personnalisez votre formule</h3>
+{# {% if formule.category is not null %}
+{% for categories in category %}
+    
+    {{ form(form.category.categories) }}
+{% endfor %}
+{% endif %} #}
+{{ form(form) }}
+<pre>
+    {{ dump(form) }}
+</pre>
 
-    {# {% for formules in formule %}
-      <div class="col-md-3">
-        {% include "formules/single_formule.html.twig" %}
-      </div>
-    {% endfor %}
-  </div> <!-- /.row --> #}
 {% endblock %}

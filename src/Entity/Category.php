@@ -18,11 +18,15 @@ class Category
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\OneToMany(targetEntity: Product::class, mappedBy: 'category')]
+    #[ORM\ManyToMany(targetEntity: Formules::class, mappedBy: 'Category')]
+    private Collection $formules;
+
+    #[ORM\ManyToMany(targetEntity: Product::class, mappedBy: 'category')]
     private Collection $products;
 
     public function __construct()
     {
+        $this->formules = new ArrayCollection();
         $this->products = new ArrayCollection();
     }
 
@@ -49,6 +53,33 @@ class Category
     }
 
     /**
+     * @return Collection<int, Formules>
+     */
+    public function getFormules(): Collection
+    {
+        return $this->formules;
+    }
+
+    public function addFormule(Formules $formule): static
+    {
+        if (!$this->formules->contains($formule)) {
+            $this->formules->add($formule);
+            $formule->addCategory($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFormule(Formules $formule): static
+    {
+        if ($this->formules->removeElement($formule)) {
+            $formule->removeCategory($this);
+        }
+
+        return $this;
+    }
+
+    /**
      * @return Collection<int, Product>
      */
     public function getProducts(): Collection
@@ -60,7 +91,7 @@ class Category
     {
         if (!$this->products->contains($product)) {
             $this->products->add($product);
-            $product->setCategory($this);
+            $product->addCategory($this);
         }
 
         return $this;
@@ -69,12 +100,10 @@ class Category
     public function removeProduct(Product $product): static
     {
         if ($this->products->removeElement($product)) {
-            // set the owning side to null (unless already changed)
-            if ($product->getCategory() === $this) {
-                $product->setCategory(null);
-            }
+            $product->removeCategory($this);
         }
 
         return $this;
     }
+
 }

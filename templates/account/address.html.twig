@@ -6,8 +6,8 @@
 
 <h1>Mes adresses</h1>
 <a href="{{ path('app_account_address_add') }}" class="btn btn-primary float-end btn-sm mx-5">Ajouter une adresse</a>
-<div class="mx-5">Ici vous pouvez gérer vos adresses.<br>
-<a href="{{ path('app_account') }}">Retour à mon compte</a><br><br>
+<div class="mx-5">Dans cet espace vous pouvez gérer toutes vos adresses.<br>
+<a href="{{ path('app_account') }}"  style="text-decoration:none;">Retour à mon compte</a><br><br>
 </div>
 {% if app.user.addresses|length == 0 %}
     <p class="text-center">Vous n'avez pas encore d'adresse dans votre compte client.<br>Pour en ajouter une, <a href="{{path('app_account_address_add') }}">cliquez ici</a></p>
@@ -22,7 +22,7 @@
                             {{ address.address }},<br>
                             {{ address.postal }} - {{ address.city }}
                             </p>                            
-                            {# <a href="{{ path('account_address_edit', {'id': address.id}) }}">Modifier</a> | <a href="{{ path('account_address_delete', {'id' : address.id}) }}">Supprimer</a> #}
+                            <p class="text-center"><a href="{{ path('app_account_address_edit', {'id': address.id}) }}" class="text-secondary"  style="text-decoration:none;">Modifier</a> | <a href="{{ path('app_account_address_delete', {'id' : address.id}) }}" class="text-danger"  style="text-decoration:none;">Supprimer</a></p>
                         </div>
                     </div>
                 </div>

@@ -64,7 +64,7 @@ class AddressType extends AbstractType
                 ]
             ])
             ->add('submit', SubmitType::class, [
-                'label' => "Ajouter l'adresse",
+                'label' => "Valider l'adresse",
                 'attr' => [
                     'class' => 'd-grid gap-2 col-4 mx-auto btn btn-primary'                   
                 ]

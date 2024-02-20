@@ -12,6 +12,7 @@
         <link rel="stylesheet" href="{{ asset('asset/css/style.css') }}">
         <link href="{{ asset('asset/css/carousel.css') }}" rel="stylesheet">
         <link rel="stylesheet" href="{{ asset('asset/css/bootstrap.min.css') }}">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
         <script src="{{ asset('build/vendor.js') }}" defer></script>
         <script src="{{ asset('asset/js/bootstrap.bundle.min.js') }}" defer></script>
         {% block stylesheets %}
@@ -35,7 +36,7 @@
                 </li>
                 <div class="vr color:#C7A37F"></div>
                 <li class="nav-item">
-                    <a class="nav-link active m-2" href="">Nous connaitre</a>
+                    <a class="nav-link active m-2" href="{{ path('app_about_us') }}">Nous connaitre</a>
                 </li>
                 <div class="vr color:#C7A37F"></div>
                 <li class="nav-item">
@@ -51,7 +52,7 @@
             </li>
                 <div class="vr color:#C7A37F"></div>
             <li class="nav-item">
-                <a class="nav-link active m-2" href="{{ path('app_logout') }}">Déconnexion</a>
+                <a class="nav-link active m-2" href="{{path('app_cart')}}">Mon putain de panier</a>
             </li>
         </ul>
         {% else %}
@@ -64,12 +65,14 @@
                 <a class="nav-link active m-2" href="{{ path('app_login') }}">Connexion</a>
             </li>
         </ul>
-        {% endif %}       
+        {% endif %}
+             
         </div>
     </div>
 </nav>
 {# navbar end #}
 <div class="main">
+
 
 {# carousel #}
 {% if block('carousel') is defined %}
@@ -95,7 +98,7 @@
     <span class="visually-hidden">Previous</span>
   </button>
   <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-    <span class="carousel-control-next-icon" aria<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">-hidden="true"></span>
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
     <span class="visually-hidden">Next</span>
   </button>
 </div>

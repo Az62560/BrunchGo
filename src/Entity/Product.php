@@ -21,20 +21,24 @@ class Product
     #[ORM\Column(length: 255)]
     private ?string $slug = null;
 
+    #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'products')]
+    private Collection $category;
+
     #[ORM\Column]
-    private ?float $price = null;
+    private ?float $quantity = null;
 
-#[ORM\ManyToOne(inversedBy: 'products')]
+    #[ORM\ManyToOne(inversedBy: 'product')]
+    private ?Order $orderDetail = null;
+
+    #[ORM\ManyToOne(inversedBy: 'orderProducts')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Category $category = null;
+    private ?Order $orderProducts = null;
 
-#[ORM\ManyToMany(targetEntity: Formules::class, mappedBy: 'Products')]
-private Collection $formules;
+    public function __construct()
+    {
+        $this->category = new ArrayCollection();
+    }
 
-public function __construct()
-{
-    $this->formules = new ArrayCollection();
- }
     public function __toString()
     {
         return $this->getName();
@@ -69,54 +73,64 @@ public function __construct()
         return $this;
     }
 
-    public function getPrice(): ?float
-    {
-        return $this->price;
-    }
-
-    public function setPrice(float $price): static
-    {
-        $this->price = $price;
-
-        return $this;
-    }
-
-    public function getCategory(): ?Category
+    /**
+     * @return Collection<int, Category>
+     */
+    public function getCategory(): Collection
     {
         return $this->category;
     }
-    
-    public function setCategory(?Category $category): static
-    {
-        $this->category = $category;
 
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Formules>
-     */
-    public function getFormules(): Collection
+    public function addCategory(Category $category): static
     {
-        return $this->formules;
-    }
-
-    public function addFormule(Formules $formule): static
-    {
-        if (!$this->formules->contains($formule)) {
-            $this->formules->add($formule);
-            $formule->addProduct($this);
+        if (!$this->category->contains($category)) {
+            $this->category->add($category);
         }
 
         return $this;
     }
 
-    public function removeFormule(Formules $formule): static
+    public function removeCategory(Category $category): static
     {
-        if ($this->formules->removeElement($formule)) {
-            $formule->removeProduct($this);
-        }
+        $this->category->removeElement($category);
 
         return $this;
     }
+
+    public function getQuantity(): ?float
+    {
+        return $this->quantity;
+    }
+
+    public function setQuantity(float $quantity): static
+    {
+        $this->quantity = $quantity;
+
+        return $this;
+    }
+
+    public function getOrderDetail(): ?Order
+    {
+        return $this->orderDetail;
+    }
+
+    public function setOrderDetail(?Order $orderDetail): static
+    {
+        $this->orderDetail = $orderDetail;
+
+        return $this;
+    }
+
+    public function getOrderProducts(): ?Order
+    {
+        return $this->orderProducts;
+    }
+
+    public function setOrderProducts(?Order $orderProducts): static
+    {
+        $this->orderProducts = $orderProducts;
+
+        return $this;
+    }
+
 }

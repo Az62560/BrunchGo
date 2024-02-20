@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\Producers;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
@@ -21,6 +22,11 @@ class ProducersCrudController extends AbstractCrudController
     {
         return [
             TextField::new('name', 'Nom du producteur'),
+            ImageField::new('illustration')
+                ->setBasePath('uploads/images')
+                ->setUploadDir('public/uploads/images')
+                ->setUploadedFileNamePattern('[randomhash].[extension]')
+                ->setRequired(false),
             TextEditorField::new('description', "Description de l'entreprise ou du producteur"),
             TextareaField::new('address', 'Adresse du producteur')
 

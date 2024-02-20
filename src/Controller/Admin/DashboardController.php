@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\DeliveryCities;
 use App\Entity\Category;
 use App\Entity\Formules;
 use App\Entity\Producers;
@@ -52,7 +53,8 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Categories', 'fa fa-list', Category::class);
         yield MenuItem::linkToCrud('Produits', 'fa fa-fish', Product::class);
         yield MenuItem::linkToCrud('Formules', 'fa fa-store', Formules::class);
-        yield MenuItem::linkToCrud('Producteurs', 'fa fa-store', Producers::class);
+        yield MenuItem::linkToCrud('Producteurs', 'fa fa-address-card', Producers::class);
+        yield MenuItem::linkToCrud('Villes de livraison', 'fa fa-city', DeliveryCities::class);
         
         yield MenuItem::linkToUrl('Revenir au site', 'fa fa-arrow-left', '/');
     }

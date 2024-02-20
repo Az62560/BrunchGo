@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+<h1>Nos partenaires producteurs ou fabriquants </h1>
+<div class="row formules-container justify-content-center">
+    {% for producers in producers %}
+        <div class="col-md-3 text-center border border-black rounded m-3" style="background-color: #e6e6e6">
+            {% include "producers/single_producer.html.twig" %}
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

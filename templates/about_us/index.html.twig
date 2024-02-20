@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nous connaitre - Brunch Go{% endblock %}
+
+{% block main %}
+<div id="infos">
+<div class="container">
+<div class="mx-5 py-5">
+<h3 class="text-center">Découvrez Brunch Go, votre solution de livraison de brunch à domicile dans la région Audomaroise.</h3><br>
+<h5>Notre entreprise s'engage à vous offrir une expérience culinaire unique, où le plaisir du brunch rencontre la commodité de la livraison à domicile.</h5><br>
+<b>Chez Brunch Go</b>, nous comprenons que chaque palais est <i>unique</i>, c'est pourquoi nous vous proposons une gamme de 
+<a href="{{ path('app_formules') }}" style="text-decoration:none;" class="text-success">formules</a>
+personnalisables pour satisfaire vos envies et répondre à vos besoins.<br>
+Que vous soyez adepte du sucré ou du salé, amateur de plats végétariens ou carnivores, ou même envie d'épater la gallerie, nous avons la formule idéale pour vous.<br>
+De plus, notre équipe est toujours disponible pour discuter dans notre espace 
+<a href="" style="text-decoration:none;" class="text-success">contact</a> 
+de vos préférences spécifiques et créer un brunch sur mesure qui ravira vos papilles.<br>
+Grâce à notre service de livraison rapide et fiable, vous pouvez savourer votre brunch préféré dans le confort de votre foyer, sans avoir à vous soucier des courses ou de la préparation.<br><br>
+Nous couvrons un large secteur, incluant :
+
+
+<div class="row border bg-primary text-start">
+    <div class="col-md-5">
+        <ul class="p-1">
+        {% for i in 0..5 %}
+            <li class="list-group-item">{{ delivery[i].name }} </li>
+        {% endfor %}
+        </ul>
+    </div>
+    <div class="col-md-6">
+        <ul class="p-1">
+            {% for i in 6..10 %}
+            <li class="list-group-item">{{ delivery[i].name }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+
+
+
+
+
+<br> <br> 
+Pour vous offrir une expérience de brunch sans tracas où que vous soyez dans la région.
+
+Chez Brunch Go, la qualité est notre priorité. Nous sélectionnons soigneusement les meilleurs ingrédients locaux et frais pour garantir une expérience gustative exceptionnelle à chaque bouchée. De la brioche dorée aux fruits frais en passant par les délices salés, chaque élément de votre brunch est préparé avec amour et expertise par notre équipe de chefs talentueux.
+
+Que ce soit pour une occasion spéciale, un brunch en famille le week-end ou simplement pour vous faire plaisir, faites confiance à Brunch Go pour vous offrir un repas délicieux et convivial sans le moindre effort. Commandez dès aujourd'hui et laissez-nous vous régaler avec notre sélection alléchante de brunchs à domicile.
+</div>
+<div class="text-end mx-5">
+Signé Ju et Ju.
+</div>
+</div>
+</div>
+{% endblock %}

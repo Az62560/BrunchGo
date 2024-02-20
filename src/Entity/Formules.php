@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\Product;
+use App\Entity\Category;
 
 
 #[ORM\Entity(repositoryClass: FormulesRepository::class)]
@@ -38,9 +39,17 @@ class Formules
     #[ORM\ManyToMany(targetEntity: Product::class, inversedBy: 'formules')]
     private Collection $Products;
 
+    #[ORM\Column]
+    private ?bool $isBest = null;
+
+    #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'formules')]
+    private Collection $Category;
+
     public function __construct()
     {
         $this->Products = new ArrayCollection();
+        $this->Category = new ArrayCollection();
+        $this->selected_products = new ArrayCollection();
     }
 
     public function __toString()
@@ -146,5 +155,66 @@ class Formules
         return $this;
     }
 
-    
+    public function isIsBest(): ?bool
+    {
+        return $this->isBest;
+    }
+
+    public function setIsBest(bool $isBest): static
+    {
+        $this->isBest = $isBest;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Category>
+     */
+    public function getCategory(): Collection
+    {
+        return $this->Category;
+    }
+
+    public function addCategory(Category $category): static
+    {
+        if (!$this->Category->contains($category)) {
+            $this->Category->add($category);
+        }
+
+        return $this;
+    }
+
+    public function removeCategory(Category $category): static
+    {
+        $this->Category->removeElement($category);
+
+        return $this;
+    }  
+
+    private $selected_products;
+
+    /**
+     * @return Collection|Product[]
+     */
+    public function getSelectedProducts(): Collection
+    {
+        return $this->selected_products;
+    }
+
+    public function addSelectedProduct(Product $product): self
+    {
+        if (!$this->selected_products->contains($product)) {
+            $this->selected_products[] = $product;
+        }
+
+        return $this;
+    }
+
+    public function removeSelectedProduct(Product $product): self
+    {
+        $this->selected_products->removeElement($product);
+
+        return $this;
+    }
+
 }

@@ -22,6 +22,9 @@ class Producers
     #[ORM\Column(length: 255)]
     private ?string $address = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $illustration = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -59,6 +62,18 @@ class Producers
     public function setAddress(string $address): static
     {
         $this->address = $address;
+
+        return $this;
+    }
+
+    public function getIllustration(): ?string
+    {
+        return $this->illustration;
+    }
+
+    public function setIllustration(?string $illustration): static
+    {
+        $this->illustration = $illustration;
 
         return $this;
     }

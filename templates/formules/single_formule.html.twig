@@ -1,6 +1,14 @@
-<div class="product-item text-center">
-    <a href="{{ path('product', { 'slug' : formule.slug }) }}"><img src="/uploads/images/{{ formule.illustration }}" alt="{{ formule.name }}" class="img-fluid"></a>
-    <h5>{{ formule.name }}</h5>
-    <span class="product-subtitle">{{ formule.subtitle }}</span>
-    <span class="product-price">{{ (formule.price /100)|number_format(2, ',', '.')  }} € </span>
-</div>
+<div class="container-fluid-sm text-center">
+  <div class="card mb-5" id="card-formule"  style="min-height:35rem;">
+    <img src="/uploads/images/{{ formule.illustration }}" class="object-fit-cover border rounded img-fluid card-img-top" id="card-img"> 
+      <div class="card-body">
+        <h5 class="card-title">{{ formule.name}}</h5><br>
+        <span class="card-text">{{ formule.subtitle }}</span><br><br>
+        <span>{{ formule.description |raw}}</span><br>
+      </div>
+      <div class="bg-success card-footer text-center">
+        <a href="{{ path('formule', {'slug' : formule.slug}) }}" style="text-decoration: none;"><span class="formule-price mt-5">{{ (formule.price /100)|number_format(2, ',', '.')  }} € </span><br>
+          Choisir cette formule</a>
+      </div>
+    </div>
+  </div>

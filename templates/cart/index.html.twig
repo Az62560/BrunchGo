@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon panier - Brunch Go{% endblock %}
+
+{% block main %}
+
+<h1>Mon panier</h1>
+  <table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Formule</th>
+      <th scope="col">Formules selectionné</th>
+      <th scope="col">Quantité</th>
+      <th scope="col">Prix</th>
+      <th scope="col">Total</th>
+    </tr>
+  </thead>
+  <tbody> 
+{# {% for order in cartComplete %}
+  <tr>
+    <th><img src="/uploads/{{ order.order.illustration }}" alt="{{ order.order.name }}">
+      <td>{{ order.order.name }}</td>
+      <td>{{ order.quantity }}</td>  
+      <td>{{ (order.order.price /100)|number_format(2, ',', '.')  }} €</td>
+      <td>{{ (order.order.price * order.quantity /100)|number_format(2, ',', '.')  }} €</td>
+  </tr>
+{% endfor %} #}
+  </tbody>
+</table>
+{% endblock %}

@@ -9,13 +9,14 @@
 }
 /* html{
     height: 100%;
-}
+} */
 
-body{
+
+/* body{
     min-height: 100%;
     position: relative;
     background-color: #C7A37F;
-} */
+}  */
 
 #navbar{
     background-color: #1F1E1E;
@@ -110,4 +111,16 @@ h1{
 .row.formules-container{
     margin : 0 0 0 5px;
     
+}
+
+a {
+    text-decoration: none;
+}
+
+#infos{
+    background-image: url(/img/terrasse.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: #E6E6E6;
 }

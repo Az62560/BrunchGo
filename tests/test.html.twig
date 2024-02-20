@@ -1,0 +1,29 @@
+{# Afficher les categories sous forme de dropdow #}
+<form method="post" action="{{ path('app_home') }}">
+
+{% for category in formule.category %}
+    <div class="dropdown p-2 m-1 w-75 bg-primary rounded">
+        <button class="btn btn-secondary dropdown-toggle w-100" type="button" id="dropdownMenuButton{{ category.id }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        {{ category.name }}
+        </button>
+
+{# Afficher les produits de chaque categories #}
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton{{ category.id }}">
+    {% for product in category.products %}
+        <div class="dropdown-item">
+            <div class="form-check border-5 border-info">
+                <input class="form-check-input color-primary" type="checkbox" value="{{ product.id }}" id="product{{ product.id }}">
+                <label class="form-check-label" for="product{{ product.id }}">{{ product.name }}</label>
+            </div>
+        </div>
+        {% endfor %}
+        </div>
+    </div>
+{% endfor %}
+<br>
+</div>        
+{# <button type="submit" class="btn btn-primary mb-5 w-25">Ajouter au panier</button> #}
+<a href="{{path('add_to_cart', { 'id':formule.id ~ product.id })}}">Ajouter au panier</a>
+</form> 
+<br>
+</div><hr>
