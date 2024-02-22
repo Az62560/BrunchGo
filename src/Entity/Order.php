@@ -18,9 +18,6 @@ class Order
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $selected_formule = null;
-
-    #[ORM\Column(length: 255)]
     private ?string $selected_products = null;
 
     #[ORM\Column]
@@ -42,18 +39,6 @@ class Order
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getSelectedFormule(): ?string
-    {
-        return $this->selected_formule;
-    }
-
-    public function setSelectedFormule(string $selected_formule): static
-    {
-        $this->selected_formule = $selected_formule;
-
-        return $this;
     }
 
     public function getSelectedProducts(): ?string

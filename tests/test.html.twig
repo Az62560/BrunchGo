@@ -1,29 +1,52 @@
 {# Afficher les categories sous forme de dropdow #}
-<form method="post" action="{{ path('app_home') }}">
+{% extends 'base.html.twig' %}
 
-{% for category in formule.category %}
-    <div class="dropdown p-2 m-1 w-75 bg-primary rounded">
-        <button class="btn btn-secondary dropdown-toggle w-100" type="button" id="dropdownMenuButton{{ category.id }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        {{ category.name }}
-        </button>
+{% block title %}{{ formule.name }}{% endblock %}
 
-{# Afficher les produits de chaque categories #}
-    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton{{ category.id }}">
-    {% for product in category.products %}
-        <div class="dropdown-item">
-            <div class="form-check border-5 border-info">
-                <input class="form-check-input color-primary" type="checkbox" value="{{ product.id }}" id="product{{ product.id }}">
-                <label class="form-check-label" for="product{{ product.id }}">{{ product.name }}</label>
+{% block main %}
+    <div class="container">
+        <div class="row justify-content-center bg-secondary py-1 text-primary">
+            <div class="col-md-3 mt-5">
+                <img src="/uploads/images/{{ formule.illustration }}" alt="{{ formule.name }}" class="img-fluid rounded border border-3 m-3">
+            </div>
+            <div class="col-md-6 mx-4 mt-5">
+                <h3 class="text-success">{{ formule.name }}</h3>
+                <p>{{ formule.subtitle }}</p>
+                <span class="product-page-price">{{ (formule.price /100)|number_format(2, ',', '.')  }} €</span>
+                <hr>
+                <p>{{ formule.description |raw }}</p>
+                <hr>
+                
+                {# Personnalisation de la formule avec un menu déroulant des catégories et les produits. #}
+                <h3 class="text-success">Personnalisez votre formule BRUNCHGO</h3>
+                
+                {{ form_start(form) }}
+                
+                {# Render the selected category field #}
+                {{ form_row(form.selected_category) }}
+                
+                {% for category in formule.category %}
+                    {# Afficher chaque catégorie en dropdown #}
+                    <div class="dropdown p-2 m-1 w-75 bg-primary rounded">
+                        <button class="btn btn-secondary dropdown-toggle w-100" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {{ category.name }}
+                        </button>
+                        {# Afficher les produits de chaque catégorie #}
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton{{ category.id }}">
+                            {% for product in category.products %}
+                                <div class="dropdown-item">
+                                    <div class="form-check border-5 border-info">
+                                        <input class="form-check-input color-primary" type="checkbox" value="{{ product.id }}" id="product{{ product.id }}">
+                                        <label class="form-check-label" for="product{{ product.id }}">{{ product.name }}</label>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endfor %}
+                
+                {{ form_end(form) }}
             </div>
         </div>
-        {% endfor %}
-        </div>
     </div>
-{% endfor %}
-<br>
-</div>        
-{# <button type="submit" class="btn btn-primary mb-5 w-25">Ajouter au panier</button> #}
-<a href="{{path('add_to_cart', { 'id':formule.id ~ product.id })}}">Ajouter au panier</a>
-</form> 
-<br>
-</div><hr>
+{% endblock %}

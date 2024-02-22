@@ -1,31 +1,49 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}{{ formule.name }}{% endblock %}
-{# Presentation de la formule #}
-   {% block main %}
-  <div class="row justify-content-center bg-secondary py-1 text-primary">
-  <div class="col-md-3 mt-5">
-            <img src="/uploads/images/{{ formule.illustration }}" alt="{{ formule.name }}" class="img-fluid rounded border border-3 m-3">
+
+{% block main %}
+    <div class="container">
+        
+        <div class="row justify-content-center bg-secondary py-1 text-primary">
+            <div class="col-md-3 mt-5">
+                <img src="/uploads/images/{{ formule.illustration }}" alt="{{ formule.name }}" class="img-fluid rounded border border-3 m-3">
+            </div>
+            <div class="col-md-6 mx-4 mt-5">
+                {# <h3 class="text-success">{{ formule.name }}</h3> #}
+                <h4>{{ formule.subtitle }}</h4>
+                <span class="product-page-price">{{ (formule.price /100)|number_format(2, ',', '.')  }} €</span>
+                {# <hr>
+                <p>{{ formule.description |raw }}</p>
+                <hr> #}
+                
+{# Personnalisation de la formule avec un menu déroulant des catégories et les produits. #}
+<h3 class="text-success">Personnalisez votre formule BRUNCHGO</h3>
+{# {% set formHtml %} #}
+{{ form_start (form, {action:path('app_cart')} ) }}
+ {% for category in formule.getCategory() %}
+    <div class="dropdown p-2 m-1 w-75 bg-primary rounded">
+        <button class="btn btn-secondary dropdown-toggle w-100" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            {{ category.name }} 
+        </button>
+        <div class="dropdown-menu">
+            {% set selectedCount = 3 %}
+            {% for product in category.getProducts() %}
+                    <div class="dropdown-item">
+                        <div class="form-check border-5 border-info">
+                            <input type="checkbox" name="form[selected_products][]" id="product{{ product.id }}" value="{{ product.id }}" class="form-check-input color-primary">
+                            <label for="product{{ product.id }}" class="form-check-label">{{ product.name }}</label>
+                        </div>
+                    </div>
+                    
+
+                    {% set selectedCount = selectedCount + 1 %}
+                
+            {% endfor %}
         </div>
-        <div class="col-md-6 mx-4 mt-5">
-            <h3 class="text-success">{{ formule.name }}</h3>
-            <p>{{ formule.subtitle }}</p>
-            <span class="product-page-price">{{ (formule.price /100)|number_format(2, ',', '.')  }} €</span>
-            <hr>
-            <p>{{ formule.description |raw }}</p>
-        <hr>
-
-{# Personnalisation de la formule avec un menu deroulant des catégories et les produits. #}
-<h3 class="text-success">Personnalisez votre formule</h3>
-{# {% if formule.category is not null %}
-{% for categories in category %}
-    
-    {{ form(form.category.categories) }}
+    </div>
 {% endfor %}
-{% endif %} #}
-{{ form(form) }}
-<pre>
-    {{ dump(form) }}
-</pre>
-
+<a href="{{ path ('formule', {'slug': formule.slug }) }}" type="submit" class="btn btn-primary">Valider ma personnalisation</a>
+{{ form_end(form) }}
+{# {% endset %} #}
 {% endblock %}

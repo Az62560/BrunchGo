@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\Product;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\SlugField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
@@ -23,6 +24,7 @@ class ProductCrudController extends AbstractCrudController
         TextField::new('name', 'Nom'),
         SlugField::new('slug')->setTargetFieldName('name'),
         NumberField::new('quantity', 'Quantité'),
+        BooleanField::new('isLuxe'),
         AssociationField::new('category', 'Catégorie'),
     ];
     }

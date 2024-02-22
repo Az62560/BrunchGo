@@ -9,22 +9,28 @@
   <thead>
     <tr>
       <th scope="col">Formule</th>
-      <th scope="col">Formules selectionné</th>
+      <th scope="col">Produits selectionnés</th>
       <th scope="col">Quantité</th>
       <th scope="col">Prix</th>
       <th scope="col">Total</th>
     </tr>
   </thead>
   <tbody> 
-{# {% for order in cartComplete %}
+  {# {% for product in products %}
+    <div>{{ product.name }}</div>
+{% endfor %} #}
+
+ {% for order in cart %} 
   <tr>
-    <th><img src="/uploads/{{ order.order.illustration }}" alt="{{ order.order.name }}">
+  <pre>
+    {{ dump(form) }}
+  </pre>
       <td>{{ order.order.name }}</td>
       <td>{{ order.quantity }}</td>  
       <td>{{ (order.order.price /100)|number_format(2, ',', '.')  }} €</td>
       <td>{{ (order.order.price * order.quantity /100)|number_format(2, ',', '.')  }} €</td>
   </tr>
-{% endfor %} #}
+{% endfor %} 
   </tbody>
 </table>
 {% endblock %}

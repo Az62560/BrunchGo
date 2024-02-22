@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class CartController extends AbstractController
 {
-    private $entityManager;
+    public $entityManager;
 
     public function __construct(EntityManagerInterface $entityManager)
     {
@@ -24,12 +24,11 @@ class CartController extends AbstractController
 
     public function index(Cart $cart): Response
     {
-        // dd($cart->get());
+        
         return $this->render('cart/index.html.twig', [
             'cart' => $cart->getFull()
         ]);
     }
-
 
     #[Route('/cart/add/{id}', name: 'add_to_cart')]
 
@@ -45,7 +44,7 @@ class CartController extends AbstractController
     public function remove(Cart $cart): Response
     {
         $cart->remove();
-        return $this->redirectToRoute('app_formules');
+    return $this->redirectToRoute('app_formules');
     }
 
-    }
+}

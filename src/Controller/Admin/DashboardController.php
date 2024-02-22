@@ -5,8 +5,10 @@ namespace App\Controller\Admin;
 use App\Entity\DeliveryCities;
 use App\Entity\Category;
 use App\Entity\Formules;
+use App\Entity\Order;
 use App\Entity\Producers;
 use App\Entity\Product;
+use App\Entity\TimeSlots;
 use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
@@ -55,6 +57,8 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Formules', 'fa fa-store', Formules::class);
         yield MenuItem::linkToCrud('Producteurs', 'fa fa-address-card', Producers::class);
         yield MenuItem::linkToCrud('Villes de livraison', 'fa fa-city', DeliveryCities::class);
+        yield MenuItem::linkToCrud('Créneaux horaires', 'fa fa-clock', TimeSlots::class);
+        yield MenuItem::linkToCrud('Détails des commandes', 'fa fa-barcode', Order::class);
         
         yield MenuItem::linkToUrl('Revenir au site', 'fa fa-arrow-left', '/');
     }
