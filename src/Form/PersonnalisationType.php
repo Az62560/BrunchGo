@@ -6,6 +6,7 @@ use App\Entity\Category;
 use App\Entity\Formules;
 use App\Entity\Product;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping\Entity;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -22,28 +23,66 @@ class PersonnalisationType extends AbstractType
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
-    {
-        $builder
-            // ->add('category', EntityType::class, [
-            //     'class' => Category::class,
-            //     'mapped' => false, // Ne pas mapper à une entité
-            //     'required' => false,
-            // ])
-            ->add('Produits', EntityType::class, [
-                'label' => 'Sélectionnez vos produits',
-                'class' => Product::class,
-                'mapped' => false, // Ne pas mapper à une entité
-                'multiple' => true,
-                'required' => false,
-            ]);
-    }
+    {  
+        $formules = $options['formule'];
 
-    public function configureOptions(OptionsResolver $resolver): void
+        foreach ($formules as $formule) {
+            $categories = $formule->getCategory();
+
+            foreach ($categories as $category) {
+                $builder
+                ->add('formule_'.$formule->getId().'_category_'.$category->getId(), EntityType::class, [
+                    'class' => 'App\Entity\Product',
+                    'choices' => $category->getProducts(),
+                    'choice_label' => 'name',
+                    'multiple' => true,
+                    'expanded' => true,
+                    'label' => $category->getName(),
+                ]);
+            }
+        }
+    }
+    public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setRequired('formule');
-        $resolver->setAllowedTypes('formule', Formules::class);
-        $resolver->setRequired('category');
-        $resolver->setAllowedTypes('category', Category::class);
-        $resolver->setDefault('products', []);
+        $resolver->setDefaults([
+            'formules' => [],
+        ]);
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //     $builder
+    //         ->add('Produits', EntityType::class, [
+    //             'label' => 'Sélectionnez vos produits',
+    //             'class' => Product::class,
+    //             'mapped' => false, // Ne pas mapper à une entité
+    //             'multiple' => true,
+    //             'required' => false,
+    //         ]);
+    // }
+
+    // public function configureOptions(OptionsResolver $resolver): void
+    // {
+    //     $resolver->setRequired('formule');
+    //     $resolver->setAllowedTypes('formule', Formules::class);
+    //     $resolver->setRequired('category');
+    //     $resolver->setAllowedTypes('category', Category::class);
+    //     $resolver->setDefault('products', []);

@@ -40,21 +40,31 @@
                 </li>
                 <div class="vr color:#C7A37F"></div>
                 <li class="nav-item">
-                    <a class="nav-link active m-2" href="">Contact</a>
+                    <a class="nav-link active m-2" href="{{ path('app_contact') }}">Contact</a>
                 </li>
             </ul>
         </div>
         <div class="px-5">
         {% if app.user %}
-        <ul class="navbar-nav sm"> 
-            <li class="nav-item">
-                <a class="nav-link active m-2 fav power-off" href="{{ path('app_account') }}">Mon compte <small>({{ app.user.firstname }})</small></a>
-            </li>
-                <div class="vr color:#C7A37F"></div>
-            <li class="nav-item">
-                <a class="nav-link active m-2" href="{{path('app_cart')}}">Mon putain de panier</a>
-            </li>
-        </ul>
+       <ul class="navbar-nav sm">
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle active m-2 fav power-off" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Mon compte <small>({{ app.user.firstname }})</small>
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="{{ path('app_account')}}">Mon compte</a>
+            <a class="dropdown-item" href="#">Mes commandes</a>
+            <a class="dropdown-item" href="{{ path('app_account_address')}}">Mes adresses</a>
+            <a class="dropdown-item" href="{{ path('app_account_password')}}">Reinitialiser son mot de passe</a>
+            <a class="dropdown-item" href="{{ path('app_logout')}}">Se déconnecter </a>
+        </div>
+    </li>
+    <div class="vr color:#C7A37F"></div>
+    <li class="nav-item">
+        <a class="nav-link active m-2" href="{{path('app_cart')}}">Mon panier</a>
+    </li>
+</ul>
+
         {% else %}
         <ul class="navbar-nav sm"> 
             <li class="nav-item">
@@ -84,13 +94,13 @@
   </div>
   <div class="carousel-inner" >
     <div class="carousel-item active">
-      <img src="img/buffet-ext.jpg" class="img-fluid" style="object-fit: cover">
+      <img src="img/carou1.jpg" class="img-fluid" style="object-fit: cover">
     </div>
     <div class="carousel-item">
-      <img src="img/con3.jpg" class="img-fluid" style="object-fit: cover">
+      <img src="img/carou2.jpg" class="img-fluid" style="object-fit: cover">
     </div>
     <div class="carousel-item ">
-      <img src="img/plage.jpg" class="img-fluid" style="object-fit: cover">
+      <img src="img/carou3.jpg" class="img-fluid" style="object-fit: cover">
     </div>
   </div>
   <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">

@@ -13,37 +13,33 @@
                 {# <h3 class="text-success">{{ formule.name }}</h3> #}
                 <h4>{{ formule.subtitle }}</h4>
                 <span class="product-page-price">{{ (formule.price /100)|number_format(2, ',', '.')  }} €</span>
-                {# <hr>
+                <hr>
                 <p>{{ formule.description |raw }}</p>
-                <hr> #}
+                <hr>
                 
 {# Personnalisation de la formule avec un menu déroulant des catégories et les produits. #}
 <h3 class="text-success">Personnalisez votre formule BRUNCHGO</h3>
-{# {% set formHtml %} #}
-{{ form_start (form, {action:path('app_cart')} ) }}
- {% for category in formule.getCategory() %}
-    <div class="dropdown p-2 m-1 w-75 bg-primary rounded">
-        <button class="btn btn-secondary dropdown-toggle w-100" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            {{ category.name }} 
-        </button>
-        <div class="dropdown-menu">
-            {% set selectedCount = 3 %}
-            {% for product in category.getProducts() %}
-                    <div class="dropdown-item">
-                        <div class="form-check border-5 border-info">
-                            <input type="checkbox" name="form[selected_products][]" id="product{{ product.id }}" value="{{ product.id }}" class="form-check-input color-primary">
-                            <label for="product{{ product.id }}" class="form-check-label">{{ product.name }}</label>
+    <div class="container">        
+        <form method="post">
+            {{ form_start(form) }}
+            <div class="accordion" id="accordionCategories">
+                {% for categoryForm in form %}
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="heading{{ loop.index }}">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ loop.index }}" aria-expanded="true" aria-controls="collapse{{ loop.index }}">
+                                {{ categoryForm.vars.label }}
+                            </button>
+                        </h2>
+                        <div id="collapse{{ loop.index }}" class="accordion-collapse collapse" aria-labelledby="heading{{ loop.index }}" data-bs-parent="#accordionCategories">
+                            <div class="accordion-body">
+                                {{ form_widget(categoryForm) }}
+                            </div>
                         </div>
                     </div>
-                    
-
-                    {% set selectedCount = selectedCount + 1 %}
-                
-            {% endfor %}
-        </div>
+                {% endfor %}
+            </div>
+            <button type="submit" class="btn btn-primary mt-3">Ajouter au panier</button>
+            {{ form_end(form) }}
+        </form>
     </div>
-{% endfor %}
-<a href="{{ path ('formule', {'slug': formule.slug }) }}" type="submit" class="btn btn-primary">Valider ma personnalisation</a>
-{{ form_end(form) }}
-{# {% endset %} #}
 {% endblock %}

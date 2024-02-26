@@ -1,47 +1,45 @@
-{% extends 'base.html.twig' %}
+    {% extends 'base.html.twig' %}
 
-{% block title %}Brunch Go - Livraison de brunch à domicile{% endblock %}
+    {% block title %}Brunch Go - Livraison de brunch à domicile{% endblock %}
 
-{% block carousel %}
-{% endblock %}
+    {% block carousel %}
+    {% endblock %}
 
-{% block main %}
-<div class="entete m-4">
-<h1 class="text-center">
-BRUNCH GO
-</h1>
+    {% block main %}
+    <div class="entete m-4">
 
-<hr>
-<strong>
-<p class="text-center">
-Venez découvrir <a href="{{ path('app_formules') }}" style="text-decoration:none;">nos formules</a> variées et pour tout les gouts.<br><br>Pourquoi nous ? Car nous avons un système de personnalisation de formules et un système de livraison rapide !
-<br><br>
-Ne perdez plus de temps et passez à table !
-</p>
-</div>
-<div class="row formules-container">
-{# //boucle 'for' pour afficher nos formules      #}
-    {% for formule in formules %}
-{# //division de la page en trois pour afficher les cartes formules #}
-      <div class="col-md-4" style="min-height:40rem;">
-        {% include "formules/single_formule.html.twig" %}
-      </div>
-    {% endfor %}
+
+ 
+    <strong>
+    <p class="text-center ">
+    Venez découvrir <a href="{{ path('app_formules') }}" style="text-decoration:none;">nos formules</a> variées et pour tout les gouts.<br><br>Pourquoi nous ? Car nous avons un système de personnalisation de formules et un système de livraison rapide !
+    <br><br>
+    Ne perdez plus de temps et passez à table !
+    </p>
     </div>
-    <h2 class="text-center ">Nos partenaires</h2>
-{# //boucle 'for' pour afficher nos partenaires      #}
-<div class="row formules-container justify-content-center">
-    {% for producers in randomP %}
-        <div class="col-md-3 text-center border border-black rounded m-3" style="background-color: #e6e6e6">
-            {% include "producers/single_producer.html.twig" %}
+    <div class="row formules-container">
+    {# //boucle 'for' pour afficher nos formules      #}
+        {% for formule in formules %}
+    {# //division de la page en trois pour afficher les cartes formules #}
+        <div class="col-md-4" style="min-height:40rem;">
+            {% include "formules/single_formule.html.twig" %}
         </div>
-    {% endfor %}
+        {% endfor %}
+        </div>
+        <h2 class="text-center ">Nos partenaires</h2>
+    {# //boucle 'for' pour afficher nos partenaires      #}
+    <div class="row formules-container justify-content-center">
+        {% for producers in randomP %}
+            <div class="col-md-3 text-center border border-black rounded m-3" style="background-color: #e6e6e6">
+                {% include "producers/single_producer.html.twig" %}
+            </div>
+        {% endfor %}
+        
+        <a href="{{path('app_producers')}}"style="text-decoration: none;"><h4 class="text-center">Retrouvez tout nos partenaires </h4></a>
     
-    <a href="{{path('app_producers')}}"style="text-decoration: none;"><h4 class="text-center">Retrouvez tout nos partenaires </h4></a>
-   
+        </div>
+        </div>
     </div>
     </div>
-</div>
-</div>
-</div>
-{% endblock %}
+    </div>
+    {% endblock %}

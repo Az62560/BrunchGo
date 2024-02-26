@@ -52,4 +52,44 @@ class CartController extends AbstractController
         // Rediriger ou afficher une réponse appropriée
     }
 }
+
+
+
+
+
+CODE JS AU CAS OU !!!! A LIRE !!!!!!!!
+
+
+// Placez ce script dans votre fichier JavaScript principal ou dans une section spécifique du template Twig où se trouve votre formulaire
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Sélectionnez le menu déroulant de la catégorie
+    const categorySelect = document.querySelector('.category-select');
+
+    // Écoutez les changements dans la sélection de la catégorie
+    categorySelect.addEventListener('change', function() {
+        // Récupérez la valeur sélectionnée
+        const categoryId = this.value;
+
+        // Effectuez une requête AJAX pour obtenir les produits associés à la catégorie sélectionnée
+        fetch(`/get-products/${categoryId}`)
+            .then(response => response.json())
+            .then(data => {
+                // Mettez à jour le menu déroulant des produits avec les données récupérées
+                const productSelect = document.querySelector('.product-select');
+                productSelect.innerHTML = '';
+
+                data.forEach(product => {
+                    const option = document.createElement('option');
+                    option.value = product.id;
+                    option.textContent = product.name; // Assurez-vous d'adapter cela selon la structure de vos données
+                    productSelect.appendChild(option);
+                });
+            })
+            .catch(error => {
+                console.error('Une erreur est survenue lors de la récupération des produits :', error);
+            });
+    });
+});
+
  #}

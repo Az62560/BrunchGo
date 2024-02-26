@@ -4,7 +4,6 @@ namespace App\Controller;
 use App\Classe\Cart;
 use App\Entity\Category;
 use App\Entity\Formules;
-use App\Entity\Order;
 use App\Entity\Product;
 use App\Form\PersonnalisationType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -16,109 +15,64 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class FormulesController extends AbstractController
 {
-    private $entityManager;
     
+    private $entityManager;
+    private $requestStack;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(EntityManagerInterface $entityManager, RequestStack $requestStack)
     {
         $this->entityManager = $entityManager; 
+        $this->requestStack = $requestStack;
     }
 
+
     #[Route('/nos-formules', name: 'app_formules')]
+
     public function index(): Response
     {
-        $formules = $this->entityManager->getRepository(Formules::class)->findAll();
+         $formules = $this->entityManager->getRepository(Formules::class)->findAll();
+        // dd($formules);
         return $this->render('formules/index.html.twig', [
-            'formules' => $formules,
+            'formule' => $formules,
         ]);
     }
 
-//     #[Route("/formule/{slug}", name: 'formule')]
 
-//     public function personnalisation($slug): Response
-//     {
-        
-//         $formule = $this->entityManager->getRepository(Formules::class)->findOneBySlug($slug);
-        
-//         if (!$formule) {
-//             return $this->redirectToRoute('app_formules');
-//         }
-    
-//         $categories = $formule->getCategory();
-//         $products = [];
+   #[Route("/nos-formules/{slug}", name: 'formule')]
 
-//         foreach ($categories as $category) {
-//             $categoryProducts = $category->getProducts()->toArray();
-//             $products = array_merge($products, $categoryProducts);
-//         }
-    
-//         $cart = new Cart($this->entityManager, $requestStack);
-//         $form = $this->createForm(PersonnalisationType::class, $cart, [
-//             'formule' => $formule,
-//             'products' => $products,
-//         ]);
-
-//         $form->handleRequest($requestStack);
-//         if ($form->isSubmitted() && $form->isValid()) {
-//             $order = $form->getData();
-//             $order->setCreatedAt(new \DateTimeImmutable());
-//             $this->entityManager->persist($order);
-            
-//             // $this->entityManager->flush();
-//             // dd($order);
-//             // Redirection vers une autre page, par exemple la page de confirmation
-//             return $this->redirectToRoute('app_cart');
-//         }
-   
-//         return $this->render('formules/show.html.twig', [
-//             'formule' => $formule,
-//             'form' => $form->createView(),
-//         ]);
-//     }
-// }
-
-
-    #[Route("/nos-formules/{slug}", name: 'formule')]
     public function show(Request $request, $slug): Response
     {
-        $session = $request->getSession();
         $formule = $this->entityManager->getRepository(Formules::class)->findOneBySlug($slug);
-        $category = $this->entityManager->getRepository(Category::class)->findAll();
-        $products = $this->entityManager->getRepository(Product::class)->findAll();  
-        
-        
-        if (!$formule) {
-            return $this->redirectToRoute('app_formules');
-        }
-
-        $categories = $formule->getCategory();
-        $products = [];
-
-        foreach ($categories as $category) {
-            $categoryProducts = $category->getProducts()->toArray();
-            $products = array_merge($products, $categoryProducts);
-        }
-
-        $form = $this->createForm(PersonnalisationType::class, $formule, [
-            'formule' => $formule,
-            'products' => $products,
-            'category' => $category,
+        $formule = $this->entityManager->getRepository(Formules::class)->getPrice();
+        $session = $request->getSession();
             
+        if (!$formule) {
+           return $this->redirectToRoute('app_formules');
+        }
+        
+
+        $form = $this->createForm(PersonnalisationType::class, null, [
+            'formules' => [$formule],
         ]);
 
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
-            $cart = $form->getData();
-            // $this->entityManager->persist($cart);
-            
-            dd($cart);
-            // Redirection vers une autre page, par exemple la page du panier
+            // Obtenez les données du formulaire
+            $formData = $form->getData();
+            $session = $request->getSession();
+            $session->set('cart_formule', $formData);
+            $session->set('cart_products', $formData);
+            // Traitez les données soumises, les produits sélectionnés pour chaque catégorie et formule
             return $this->redirectToRoute('app_cart');
+            
         }
-    
+
         return $this->render('formules/show.html.twig', [
             'formule' => $formule,
             'form' => $form->createView(),
+            // 'price' => $formule->getPrice(),
+            
         ]);
     }
 }

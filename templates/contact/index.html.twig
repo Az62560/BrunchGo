@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nous contacter - Brunch Go{% endblock %}
+
+{% block main %}
+<div class="form pt-3">
+<h2>Pour nous contacter</h2>
+    <p>Nous mettons à votre disposition différentes façons de nous contacter :</p>
+
+    {% for message in app.flashes('notice') %}
+        <div class="alert alert-info">{{ message }}</div>
+    {% endfor %}
+    <div class="row">
+    <div class="col-md-8 pe-5">{{ form(form) }}</div>
+    <div class="col-md-4">
+        <strong>Brunch Go</strong>
+        <hr>
+        06 06 06 06 06<br>
+        22 rue de par là bas, 11111 - Lunvaziondéun<br>
+        contact@brunchgo.com
+        
+    </div>
+    </div></div>
+{% endblock %}

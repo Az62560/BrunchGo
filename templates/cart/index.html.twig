@@ -3,34 +3,39 @@
 {% block title %}Mon panier - Brunch Go{% endblock %}
 
 {% block main %}
-
-<h1>Mon panier</h1>
-  <table class="table">
-  <thead>
-    <tr>
-      <th scope="col">Formule</th>
-      <th scope="col">Produits selectionnés</th>
-      <th scope="col">Quantité</th>
-      <th scope="col">Prix</th>
-      <th scope="col">Total</th>
-    </tr>
-  </thead>
-  <tbody> 
-  {# {% for product in products %}
-    <div>{{ product.name }}</div>
-{% endfor %} #}
-
- {% for order in cart %} 
-  <tr>
-  <pre>
-    {{ dump(form) }}
-  </pre>
-      <td>{{ order.order.name }}</td>
-      <td>{{ order.quantity }}</td>  
-      <td>{{ (order.order.price /100)|number_format(2, ',', '.')  }} €</td>
-      <td>{{ (order.order.price * order.quantity /100)|number_format(2, ',', '.')  }} €</td>
-  </tr>
-{% endfor %} 
-  </tbody>
-</table>
+<h1>Panier</h1>
+{# {% if cart|length > 0 %} #}
+<table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Formule</th>
+            <th scope="col">Produits</th>
+            <th scope="col">Prix</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% if selectedProducts is not empty %}
+            <td>
+            {{ formule }}
+            </td>
+            <td>
+            {% for categoryProducts in selectedProducts %}
+                {% for product in categoryProducts %}
+                    <li>{{ product.name }}</li>
+                {% endfor %}
+            {% endfor %}   
+            </td>
+            <td>
+            {# {% for formule in formulePrice %}
+                {{ (formule.price /100)|number_format(2, ',', '.')  }} €
+            {% endfor %} #}
+            </td>
+        </tr>
+        
+        
+        </tbody>    
+        {% else %}
+        <p>Aucun produit sélectionné.</p>
+        {% endif %}
+{# {% endif %} #}
 {% endblock %}
