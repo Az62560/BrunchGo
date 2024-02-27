@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Category;
 use App\Entity\Formules;
 use App\Entity\Product;
+use Doctrine\DBAL\Types\TextType;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\Entity;
 use Symfony\Component\Form\AbstractType;
@@ -12,6 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 
 class PersonnalisationType extends AbstractType
 {
@@ -24,10 +26,12 @@ class PersonnalisationType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {  
-        $formules = $options['formule'];
+        $formules = $options['formules'];
 
         foreach ($formules as $formule) {
             $categories = $formule->getCategory();
+            $formulePrice = $formule->getPrice();
+            
 
             foreach ($categories as $category) {
                 $builder
@@ -38,8 +42,17 @@ class PersonnalisationType extends AbstractType
                     'multiple' => true,
                     'expanded' => true,
                     'label' => $category->getName(),
+                ])
+                ->add('price', \Symfony\Component\Form\Extension\Core\Type\HiddenType::class, [
+                    'data' => $formulePrice , // Value to pass
+                    
                 ]);
-            }
+                
+                
+                
+                
+              
+            }  
         }
     }
     public function configureOptions(OptionsResolver $resolver)

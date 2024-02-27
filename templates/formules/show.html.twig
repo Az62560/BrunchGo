@@ -18,12 +18,14 @@
                 <hr>
                 
 {# Personnalisation de la formule avec un menu déroulant des catégories et les produits. #}
+{# Personnalisation de la formule avec un menu déroulant des catégories et les produits. #}
 <h3 class="text-success">Personnalisez votre formule BRUNCHGO</h3>
-    <div class="container">        
-        <form method="post">
-            {{ form_start(form) }}
-            <div class="accordion" id="accordionCategories">
-                {% for categoryForm in form %}
+<div class="container">        
+    <form method="post">
+        {{ form_start(form) }}
+        <div class="accordion" id="accordionCategories">
+            {% for categoryForm in form %}
+                {% if categoryForm.vars.name != 'price' %}
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="heading{{ loop.index }}">
                             <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ loop.index }}" aria-expanded="true" aria-controls="collapse{{ loop.index }}">
@@ -36,10 +38,12 @@
                             </div>
                         </div>
                     </div>
-                {% endfor %}
-            </div>
-            <button type="submit" class="btn btn-primary mt-3">Ajouter au panier</button>
-            {{ form_end(form) }}
-        </form>
-    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+        <button type="submit" class="btn btn-primary mt-3">Ajouter au panier</button>
+        {{ form_end(form) }}
+    </form>
+</div>
+
 {% endblock %}
