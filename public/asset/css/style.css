@@ -117,10 +117,17 @@ a {
     text-decoration: none;
 }
 
-#infos{
+#aboutUs{
     background-image: url(/img/terrasse.jpg);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     color: #E6E6E6;
+}
+
+#cart{
+    background-image: url(/img/voiture.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }

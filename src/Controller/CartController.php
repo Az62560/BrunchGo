@@ -15,34 +15,35 @@ use Symfony\Component\Routing\Attribute\Route;
 class CartController extends AbstractController
 {
     private $entityManager;
-    private $requestStack;
     
-    public function __construct(EntityManagerInterface $entityManager, RequestStack $requestStack)
+    public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
-        $this->requestStack = $requestStack;
     }
 
     #[Route('/mon-panier', name: 'app_cart')]
 
     public function index(Request $request, Cart $cart): Response
     {
-
         $session = $request->getSession();
-        $formuleName = $session->get('cart_formule');
-        $formulePrice = $session->get('cart_formule_price');
+        $formules = $session->get('cart_formule');
         $selectedProducts = $session->get('cart_products');
-        // $formule = $session->get('')
-        // dd($formule);
+        // dd($formules);
+        foreach ($formules as $singleFormule) {
+        //    dd($singleFormule);
+        }   
+        
         return $this->render('cart/index.html.twig', [
-            'formuleName' => $formuleName,
-            'selectedProducts' => $selectedProducts,  
-            'formulePrice' => $formulePrice,
+            'cart' => $cart,
+            'singleFormule' => $singleFormule,
+            'formules' => $formules,
+            'selectedProducts' => $selectedProducts,    
             
-            // dd($request),
         ]);
     }
 
+
+    
     #[Route('/cart/add/{id}', name: 'add_to_cart')]
  
     public function add(Request $request, Cart $cart, $id): Response
@@ -53,16 +54,13 @@ class CartController extends AbstractController
         $selectedProducts = $this->entityManager->getRepository(Product::class)->findBy(['id' => $selectedProductIds]);
         $selectedFormule = $this->entityManager->getRepository(Formules::class)->findOneById($id);
 
-        $session = $request->getSession();
-        $session->set('cart_formule', $selectedFormule->getName());
-        $session->set('cart_formule_price', $selectedFormule->getPrice());
-        dd($session);
 
     // Ajouter l'ID de la formule au panier
-        $cart->add($selectedProducts);
-        $cart->add($selectedFormule);
+    $cart->add($selectedFormule);
+    foreach ($selectedProducts as $product) {
+        $cart->add($product);
         
-
+    }
         return $this->redirectToRoute('app_cart'); 
     }
 

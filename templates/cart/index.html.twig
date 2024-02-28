@@ -8,32 +8,28 @@
     <table class="table">
         <thead>
             <tr>
-                <th scope="col">Formule</th>
+                <th scope="col" >Formule</th>
                 <th scope="col">Produits</th>
                 <th scope="col">Prix</th>
             </tr>
         </thead>
-        <tbody>
-            {% if selectedProducts is not empty %}
+        <tbody >
+            {% if formules is not empty %}
+                {% for singleFormule in formules %}
                 <tr>
-                    <td>{{ formuleName }}</td> {# Affiche le nom de la formule #}
-                    
-                    <td>
-                        {% for categoryProducts in selectedProducts %}
-                            {% for product in categoryProducts %}
-                                <li>{{ product.name }}</li>
-                            {% endfor %}
-                        {% endfor %}   
-                    </td>
-                    <td>{{ (formulePrice / 100)|number_format(2, ',', ' ') }}</td>
+                    <td>{{ singleFormule.0.name }}</td> 
+
+                    <td>{% for elements in singleFormule.1 %}
+                            {% for item in elements %}
+                                <li>{{ item.name }}</li>
+                            {% endfor %}   
+                        {% endfor %}</td>
+
+                    <td>{{ (singleFormule.0.price /100)|number_format(2, ',', '.')  }}</td>
                 </tr>
-            {% else %}
-                <tr>
-                    <td colspan="3">Aucun produit sélectionné.</td>
-                </tr>
-            {% endif %}
+                {% endfor %}                
+            {% endif %}            
         </tbody>
     </table>
 </div>
 {% endblock %}
-

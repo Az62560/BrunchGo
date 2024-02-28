@@ -2,8 +2,11 @@
 
 namespace App\Classe;
 
+use App\Entity\Formules;
+use App\Entity\Product;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 class Cart
@@ -42,28 +45,26 @@ class Cart
     public function remove()
     {
     
-        return $this->session->remove('cart');
+        return $this->session->remove('cart_formule');
     }
 
-    // public function getFull() 
-    // {
-    //     $cartComplete = [];
+    public function getFormulePerso(Cart $cart) 
+    {
+        $formulePerso = [];
 
-    //     if ($this->get()) {
-    //         foreach ($this->get() as $id => $quantity) {
-    //             $product_object = $this->entityManager->getRepository(Product::class)->findOneById($id);
+        if ($this->get()) {
+            foreach ($this->get() as $id => $products) {
+                $selectedProductIds = $cart->session->get('selected_products');
+                $products = $this->entityManager->getRepository(Product::class)->find(['id' => $selectedProductIds]);
+                $formule = $this->entityManager->getRepository(Formules::class)->find($id);
 
-    //             if (!$product_object) {
-    //                $this->delete($id);
-    //                continue; 
-    //             }
-
-    //             $cartComplete[] = [
-    //                 'product' => $product_object,
-    //                 'quantity' => $quantity
-    //             ];
-    //         }
-    //     }
-    //     return $cartComplete;
-    // }
+                $formulePerso[] = [
+                    'formule' => $formule,
+                    'products' => $products,
+                    'selectedProductIds' => $selectedProductIds,
+                ];
+            }
+        }
+        return $formulePerso;
+    }
 }

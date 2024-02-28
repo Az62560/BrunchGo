@@ -59,13 +59,20 @@ class FormulesController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
             // Obtenez les données du formulaire
             $formData = $form->getData();
             $session = $request->getSession();
-            $session->set('cart_formule', $formule->getName());
-            $session->set('cart_formule_price', $formulePrice);
+            $cart = $session->get('cart_formule');
+
+            // passer les données en tableau avec les formules selectionnées et les produits associés
+            $cart[] = [$formule, $formData];
+
+            // Ajouter les données du tableau en session
+            $session->set('cart_formule', $cart);
             $session->set('cart_products', $formData);
-            // Traitez les données soumises, les produits sélectionnés pour chaque catégorie et formule
+
+            // redirection vers la page "mon-panier"
             return $this->redirectToRoute('app_cart');
             
         }
@@ -73,7 +80,7 @@ class FormulesController extends AbstractController
         return $this->render('formules/show.html.twig', [
             'formule' => $formule,
             'form' => $form->createView(),
-            'formulePrice' => $formulePrice
+            // 'formulePrice' => $formulePrice
             // 'price' => $formule->getPrice(),
             
         ]);

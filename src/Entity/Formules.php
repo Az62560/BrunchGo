@@ -198,7 +198,7 @@ class Formules
      */
     public function getSelectedProducts(): Collection
     {
-        return $this->selected_products;
+        return $this->selected_products ?: new ArrayCollection();
     }
 
     public function addSelectedProduct(Product $product): self
