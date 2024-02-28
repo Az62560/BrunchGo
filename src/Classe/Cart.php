@@ -44,27 +44,35 @@ class Cart
 
     public function remove()
     {
-    
         return $this->session->remove('cart_formule');
     }
+    // public function delete($id){
+    //     $cart = $this->session->get('cart', []);
+    //     unset($cart[$id]);
+    //     return $this->session->set('cart', $cart);
+    // }
+    
+    
 
-    public function getFormulePerso(Cart $cart) 
-    {
-        $formulePerso = [];
 
-        if ($this->get()) {
-            foreach ($this->get() as $id => $products) {
-                $selectedProductIds = $cart->session->get('selected_products');
-                $products = $this->entityManager->getRepository(Product::class)->find(['id' => $selectedProductIds]);
-                $formule = $this->entityManager->getRepository(Formules::class)->find($id);
 
-                $formulePerso[] = [
-                    'formule' => $formule,
-                    'products' => $products,
-                    'selectedProductIds' => $selectedProductIds,
-                ];
-            }
-        }
-        return $formulePerso;
-    }
+    // public function getFormulePerso(Cart $cart) 
+    // {
+    //     $formulePerso = [];
+
+    //     if ($this->get()) {
+    //         foreach ($this->get() as $id => $products) {
+    //             $selectedProductIds = $cart->session->get('selected_products');
+    //             $products = $this->entityManager->getRepository(Product::class)->find(['id' => $selectedProductIds]);
+    //             $formule = $this->entityManager->getRepository(Formules::class)->find($id);
+
+    //             $formulePerso[] = [
+    //                 'formule' => $formule,
+    //                 'products' => $products,
+    //                 'selectedProductIds' => $selectedProductIds,
+    //             ];
+    //         }
+    //     }
+    //     return $formulePerso;
+    // }
 }

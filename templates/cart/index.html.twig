@@ -6,16 +6,17 @@
 <div class="container">
     <h1 class="mb-4">Panier</h1>
     <table class="table">
+    {% if formules is not empty %}
         <thead>
             <tr>
                 <th scope="col" >Formule</th>
                 <th scope="col">Produits</th>
                 <th scope="col">Prix</th>
+                <th scope="col"></th>
             </tr>
         </thead>
         <tbody >
-            {% if formules is not empty %}
-                {% for singleFormule in formules %}
+            {% for singleFormule in formules %}
                 <tr>
                     <td>{{ singleFormule.0.name }}</td> 
 
@@ -23,13 +24,22 @@
                             {% for item in elements %}
                                 <li>{{ item.name }}</li>
                             {% endfor %}   
-                        {% endfor %}</td>
+                        {% endfor %}
+                    </td>
 
-                    <td>{{ (singleFormule.0.price /100)|number_format(2, ',', '.')  }}</td>
-                </tr>
-                {% endfor %}                
-            {% endif %}            
+                    <td>{{ (singleFormule.0.price /100)|number_format(2, ',', '.')  }} €</td>
+                    {# {% dump(singleFormule.0.id) %} #}
+                    {# <td><a href="{{ path('delete', {'id': singleFormule.0.id } ) }}" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette formule du panier ?')">Supprimer</a> #}
+                </tr>         
+            {% endfor %}                        
+            
+            {% elseif formules == null%}
+                <p class="text-center">Votre panier est vide. Pour commencer à commander nos delicieux brunch veuillez cliquer <a href="{{ path('app_formules')}}">ici</a></p>            
+        {% endif %}
+        
         </tbody>
+        
     </table>
+    <a href="{{ path('app_order') }}" class ="btn btn-primary">Valider mon panier</a>
 </div>
 {% endblock %}

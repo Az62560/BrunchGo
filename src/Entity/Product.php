@@ -30,13 +30,6 @@ class Product
     #[ORM\ManyToOne(inversedBy: 'product')]
     private ?Order $orderDetail = null;
 
-    #[ORM\ManyToOne(inversedBy: 'orderProducts')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Order $orderProducts = null;
-
-    #[ORM\Column]
-    private ?bool $isLuxe = null;
-
     public function __construct()
     {
         $this->category = new ArrayCollection();
@@ -123,29 +116,4 @@ class Product
 
         return $this;
     }
-
-    public function getOrderProducts(): ?Order
-    {
-        return $this->orderProducts;
-    }
-
-    public function setOrderProducts(?Order $orderProducts): static
-    {
-        $this->orderProducts = $orderProducts;
-
-        return $this;
-    }
-
-    public function isIsLuxe(): ?bool
-    {
-        return $this->isLuxe;
-    }
-
-    public function setIsLuxe(bool $isLuxe): static
-    {
-        $this->isLuxe = $isLuxe;
-
-        return $this;
-    }
-
 }

@@ -3,8 +3,7 @@
 {% block title %}{{ formule.name }}{% endblock %}
 
 {% block main %}
-    <div class="container">
-        
+    <div class="container">        
         <div class="row justify-content-center bg-secondary py-1 text-primary">
             <div class="col-md-3 mt-5">
                 <img src="/uploads/images/{{ formule.illustration }}" alt="{{ formule.name }}" class="img-fluid rounded border border-3 m-3">
@@ -17,9 +16,10 @@
                 <p>{{ formule.description |raw }}</p>
                 <hr>
                 
+
 {# Personnalisation de la formule avec un menu déroulant des catégories et les produits. #}
-{# Personnalisation de la formule avec un menu déroulant des catégories et les produits. #}
-<h3 class="text-success">Personnalisez votre formule BRUNCHGO</h3>
+<h4 class="text-success text-center">Personnalisez votre formule Brunch Go</h4>
+<p class="text-center">Veuillez choisir deux produits par catégorie affichée</p>
 <div class="container">        
     <form method="post">
         {{ form_start(form) }}
@@ -45,5 +45,22 @@
         {{ form_end(form) }}
     </form>
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Sélectionnez tous les champs de formulaire de type checkbox
+        var checkboxes = document.querySelectorAll('input[type="checkbox"]');
 
+        checkboxes.forEach(function(checkbox) {
+            checkbox.addEventListener('change', function() {
+                var categoryCheckboxes = document.querySelectorAll('input[type="checkbox"][name="' + this.name + '"]:checked');
+                
+                // Si le nombre de cases cochées dépasse 3, décochez la case actuellement cochée
+                if (categoryCheckboxes.length > 2) {
+                    this.checked = false;
+                    
+                }
+            });
+        });
+    });
+</script>
 {% endblock %}

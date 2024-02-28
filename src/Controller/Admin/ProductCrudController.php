@@ -24,7 +24,6 @@ class ProductCrudController extends AbstractCrudController
         TextField::new('name', 'Nom'),
         SlugField::new('slug')->setTargetFieldName('name'),
         NumberField::new('quantity', 'Quantité'),
-        BooleanField::new('isLuxe'),
         AssociationField::new('category', 'Catégorie'),
     ];
     }

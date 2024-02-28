@@ -27,15 +27,10 @@ class CartController extends AbstractController
     {
         $session = $request->getSession();
         $formules = $session->get('cart_formule');
-        $selectedProducts = $session->get('cart_products');
-        // dd($formules);
-        foreach ($formules as $singleFormule) {
-        //    dd($singleFormule);
-        }   
+        $selectedProducts = $session->get('cart_products');  
         
         return $this->render('cart/index.html.twig', [
             'cart' => $cart,
-            'singleFormule' => $singleFormule,
             'formules' => $formules,
             'selectedProducts' => $selectedProducts,    
             
@@ -72,5 +67,41 @@ class CartController extends AbstractController
         $cart->remove();
         return $this->redirectToRoute('app_formules');
     }
+   
+//     #[Route('/cart/delete/{id}', name: 'delete')]
 
+//     public function delete(Cart $cart, $id): Response
+// {
+//     $cart->delete($id);
+//     return $this->redirectToRoute('app_cart');
+// }
+
+
+
+
+
+    // #[Route('/cart/delete/formule/{id}', name: 'delete_formule')]
+    // public function deleteFormule($id): Response
+    // {
+    //     $cart = $this->session->get('cart', []);
+
+    //     // Recherchez la formule dans le tableau cart_formule
+    //     $cartFormules = $cart['cart_formule'] ?? [];
+    //     foreach ($cartFormules as $key => $formuleArray) {
+    //         // Si l'ID de la formule correspond à celui que vous souhaitez supprimer
+    //         if ($formuleArray[0]->getId() == $id) {
+    //             // Supprimez la formule du tableau cart_formule
+    //             unset($cart['cart_formule'][$key]);
+    //             // Sortez de la boucle, car la formule a été trouvée et supprimée
+    //             break;
+    //         }
+    //     }
+
+    //     // Mettez à jour le panier dans la session
+    //     $this->session->set('cart', $cart);
+
+    //     return $this->redirectToRoute('app_cart');
+    // }
+   
 }
+
