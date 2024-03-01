@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Classe\Cart;
 use App\Entity\TimeSlots;
+use App\Entity\WorkingDay;
 use App\Form\OrderType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -32,6 +33,9 @@ class OrderController extends AbstractController
         
         $form = $this->createForm(OrderType::class, null, [
             'user' => $this->getUser(),
+            'workingDays' => $this->entityManager->getRepository(WorkingDay::class)->findByAvailable(1),
+            'timeSlots' => $this->entityManager->getRepository(TimeSlots::class)->findByIsFree(1),
+    
             // 'timeSlots' => $this->getHours(),
         ]);
         $session = $request->getSession();
@@ -39,10 +43,12 @@ class OrderController extends AbstractController
         $selectedProducts = $session->get('cart_products');
 
         return $this->render('order/index.html.twig', [
+           
             'form' => $form->createView(),
             'cart' => $cart->get(),
             'formules' => $formules,
             'selectedProducts' => $selectedProducts,
+            // 'timeSlots' => $timeSlots,
         ]);
         
     }

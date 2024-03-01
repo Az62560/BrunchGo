@@ -32,7 +32,6 @@ class TimeSlots
     public function __toString()
     {
         return $this->getHours();
-        // return $this->isIsFree();
     }
 
     public function getId(): ?int

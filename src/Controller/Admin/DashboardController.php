@@ -10,6 +10,7 @@ use App\Entity\Producers;
 use App\Entity\Product;
 use App\Entity\TimeSlots;
 use App\Entity\User;
+use App\Entity\WorkingDay;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -57,7 +58,8 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Formules', 'fa fa-store', Formules::class);
         yield MenuItem::linkToCrud('Producteurs', 'fa fa-address-card', Producers::class);
         yield MenuItem::linkToCrud('Villes de livraison', 'fa fa-city', DeliveryCities::class);
-        yield MenuItem::linkToCrud('Créneaux horaires', 'fa fa-clock', TimeSlots::class);
+        yield MenuItem::linkToCrud('Jours et heures de livraison', 'fa fa-clock', WorkingDay::class);
+        yield MenuItem::linkToCrud('heures disponible', 'fa fa-clock', TimeSlots::class);
         yield MenuItem::linkToCrud('Détails des commandes', 'fa fa-barcode', Order::class);
         
         yield MenuItem::linkToUrl('Revenir au site', 'fa fa-arrow-left', '/');

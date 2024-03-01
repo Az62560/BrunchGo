@@ -14,75 +14,64 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 class OrderType extends AbstractType
 {
+    
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $user = $options['user'];
         $workingDays = $options['workingDays'];
-
-        $builder
-            ->add('addresses', EntityType::class, [
+        $user = $options['user'];
+        // Initialiser un tableau pour stocker les choix d'horaires de TimeSlots
+        $timeSlotChoices = [];
+        $builder->add(
+            'addresses',
+            EntityType::class,
+            [
                 'label' => 'Votre adresse',
                 'required' => true,
                 'class' => Address::class,
                 'choices' => $user->getAddresses(),
                 'multiple' => false,
-                'expanded' => true
-            ])
-            ->add('workingDay', EntityType::class, [
-                'label' => "Sélectionnez le jour de livraison :",
-                'required' => true,
-                'class' => WorkingDay::class,
-                'choices' => $workingDays,
-                'choice_label' => function ($workingDay) {
-                    return $workingDay->getDay(); // Ajoutez une méthode getDay() dans votre entité WorkingDay
-                },
-                'placeholder' => 'Choisir un jour',
-                'mapped' => false,
-            ])
-            ->add('timeslot', EntityType::class, [
-                'label' => "Votre heure de livraison :",
-                'required' => true,
-                'class' => TimeSlots::class,
-                'placeholder' => 'Sélectionnez d\'abord un jour',
-                'choices' => [],
-                'mapped' => false,
-            ])
-            ->add('submit', SubmitType::class, [
-                'label' => 'Valider ma commande et payer', 
-                'attr' => [
-                    'class' => 'mx-5 col-6 btn btn-primary'
+                'expanded' => true,
                 ]
-            ]);
-        
-        $builder->get('workingDay')->addEventListener(
-            FormEvents::POST_SUBMIT,
-            function (FormEvent $event) {
-                $form = $event->getForm()->getParent();
-                $workingDay = $event->getForm()->getData();
-                $form->add('timeslot', EntityType::class, [
-                    'label' => "Votre heure de livraison :",
-                    'required' => true,
-                    'class' => TimeSlots::class,
-                    'choices' => $workingDay->getTimeSlots(),
-                    'choice_label' => function ($timeSlot) {
-                        return $timeSlot->getStartTime()->format('H:i') . ' - ' . $timeSlot->getEndTime()->format('H:i');
-                    },
-                    'placeholder' => 'Sélectionnez une heure',
-                    'mapped' => false,
+            );
+            foreach ($workingDays as $workingDay) {
+                $timeSlots = $workingDay->getTimeSlots();
+                
+                // Ajouter les horaires de TimeSlots aux choix
+                
+                
+                // Ajouter le champ pour le jour de la semaine
+                $builder->add('workingDay_' . $workingDay->getId(), EntityType::class, [
+                    'label' => $workingDay->getDayOfWeek(),
+                    'class' => 'App\Entity\TimeSlots',
+                    'choices' => $timeSlots,
+                    'choice_label' => 'hours',
+                    'multiple' => false,
+                    'expanded' => false,
                 ]);
             }
-        );
-    }
-
-    public function configureOptions(OptionsResolver $resolver): void
-    {
-        $resolver->setDefaults([
-            'data_class' => Order::class,
-            'user' => null,
-            'workingDays' => [],
-        ]);
-    }
-}
+            
+            // Ajouter le champ pour les horaires de TimeSlots
+            
+            
+            
+            // Ajouter le champ pour le bouton de soumission
+            $builder->add('submit', SubmitType::class, [
+                'label' => 'Valider ma commande et payer',
+                'attr' => [
+                    'class' => 'mx-5 col-6 btn btn-primary'
+                    ]
+                ]);
+            }
+            public function configureOptions(OptionsResolver $resolver): void
+            {
+                $resolver->setDefaults([
+                    'data_class' => Order::class,
+                    'user' => null,
+                    'workingDays' => [],
+                    'timeSlots' => [],
+                ]);
+            }
+        }

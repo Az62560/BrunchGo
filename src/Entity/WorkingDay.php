@@ -21,9 +21,16 @@ class WorkingDay
     #[ORM\ManyToMany(targetEntity: TimeSlots::class, inversedBy: 'workingDays')]
     private Collection $timeSlots;
 
+    #[ORM\Column]
+    private ?bool $available = null;
+
     public function __construct()
     {
         $this->timeSlots = new ArrayCollection();
+    }
+    public function __toString()
+    {
+        return $this->getDayOfWeek();
     }
 
     public function getId(): ?int
@@ -63,6 +70,18 @@ class WorkingDay
     public function removeTimeSlot(TimeSlots $timeSlot): static
     {
         $this->timeSlots->removeElement($timeSlot);
+
+        return $this;
+    }
+
+    public function isAvailable(): ?bool
+    {
+        return $this->available;
+    }
+
+    public function setAvailable(bool $available): static
+    {
+        $this->available = $available;
 
         return $this;
     }

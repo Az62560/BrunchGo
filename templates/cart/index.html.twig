@@ -38,7 +38,9 @@
     </table>
     <a href="{{ path('app_order') }}" class ="btn btn-primary mb-3">Valider mon panier</a>
     {% elseif formules == null %}
-        <p class="text-center">Votre panier est vide. Pour commencer à commander nos delicieux brunch veuillez cliquer <a href="{{ path('app_formules')}}">ici</a></p>            
+    <div class="bg-primary">
+        <p class="text-center" style="color: #E6E6E6;">Votre panier est vide. Pour commencer à commander nos delicieux brunch veuillez cliquer <a href="{{ path('app_formules')}}" class="text-decoration-none" style="color: #E6E6E6;">ici</a></p>            
+    </div>
     {% endif %}
 </div>
 {% endblock %}
