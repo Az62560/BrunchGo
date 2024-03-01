@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Annotation;
 
 class CartController extends AbstractController
 {
@@ -28,7 +29,7 @@ class CartController extends AbstractController
         $session = $request->getSession();
         $formules = $session->get('cart_formule');
         $selectedProducts = $session->get('cart_products');  
-        
+        // dd($session);
         return $this->render('cart/index.html.twig', [
             'cart' => $cart,
             'formules' => $formules,
@@ -68,13 +69,15 @@ class CartController extends AbstractController
         return $this->redirectToRoute('app_formules');
     }
    
-//     #[Route('/cart/delete/{id}', name: 'delete')]
+    #[Route('/cart/delete/{uniqId}', name: 'delete')]
+    public function delete(Cart $cart, $uniqId)
+    {
+        // Supprimer la formule spécifique du panier
+        $cart->delete($uniqId);
+        // Rediriger vers la page du panier
+        return $this->redirectToRoute('app_cart');
+    }
 
-//     public function delete(Cart $cart, $id): Response
-// {
-//     $cart->delete($id);
-//     return $this->redirectToRoute('app_cart');
-// }
 
 
 

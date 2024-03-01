@@ -23,6 +23,8 @@ class TimeSlotsCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         return [
+            // TextField::new('days', 'Jours'),
+            // BooleanField::new('isFree', 'Disponible'),
             TextField::new('hours', 'Heure'),
             BooleanField::new('isFree', 'Disponible')     
         ];

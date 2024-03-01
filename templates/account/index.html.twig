@@ -5,7 +5,7 @@
 {% block main %}
 <main class="mx-3" style="height:30rem;">
     <h1>Mon compte</h1>
-    <p class="text-end"><a href="{{ path('app_logout') }}"  style="text-decoration:none;">Déconnexion</a></p>
+    <p class="text-end"><a href="{{ path('app_logout') }}"  class="btn btn-primary">Se déconnecter</a></p>
     Bienvenue {{app.user.firstname}} dans votre espace de compte.<br>
 C'est ici que vous allez pouvoir gérer toutes vos informations personnelles.<br>
 

@@ -1,7 +1,41 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello OrderController!{% endblock %}
+{% block title %}Finalisez votre commande{% endblock %}
 
 {% block main %}
-    <p>Espace pour visualiser son panier et choisir l'adresse de livraison.</p>
+<div class="container-fluid">
+<h4 class="text-center pt-4">Choisissez vos préférences de livraison</h4><br>
+<div class="row px-5">
+    <div class="col-md-4">
+        {% set formHtml %}
+            {{ form_start(form, {action:path('app_order')}) }}
+                    <a href="{{ path('app_account_address_add') }}">Ajouter une nouvelle adresse</a>
+                {{ form_end(form) }}
+        {% endset %}
+
+        {{ formHtml|replace({'[br]' : '<br>'})|raw }}
+    </div>
+    <div class="col-md-8">
+        <div class="text-center">
+            <b>Récapitulatif du panier</b><br>
+        </div>
+        <div class="order-summary">
+            {% for key,singleFormule in formules %}
+                <hr><div class="row {% if key > 0 %}mt-2{% endif %}">
+                    <div class="col-3">
+                        {{ singleFormule.0.name }}<br>
+                    </div>
+                    <div class="col-8">
+                        {% for elements in singleFormule.1 %}
+                            {% for item in elements %}
+                                {{ item.name }}<br>                  
+                            {% endfor %}   
+                        {% endfor %}                        
+                    </div>
+                    {{ (singleFormule.0.price /100)|number_format(2, ',', '.')  }} €
+                </div>
+            {% endfor %}   
+        </div>       
+    </div>   
+</div>
 {% endblock %}

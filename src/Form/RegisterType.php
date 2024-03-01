@@ -42,6 +42,13 @@ class RegisterType extends AbstractType
                 ]
             ])
 
+            ->add('city', TextType::class, [
+                'label' => "Ville",
+                'attr' => [
+                    'placeholder' => 'Entrez votre ville'
+                ]
+            ])
+
             ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'invalid_message' => 'Le mot de passe et sa confirmation doivent être identique',

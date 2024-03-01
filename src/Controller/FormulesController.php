@@ -42,9 +42,8 @@ class FormulesController extends AbstractController
 
     public function show(Request $request, $slug): Response
     {
-        
+      
         $formule = $this->entityManager->getRepository(Formules::class)->findOneBySlug($slug);  
-        $formulePrice = $formule->getPrice(); 
         $session = $request->getSession();
             
         if (!$formule) {
@@ -53,7 +52,7 @@ class FormulesController extends AbstractController
         
 
         $form = $this->createForm(PersonnalisationType::class, null, [
-            'formules' => [$formule],
+            'formules' => [$formule]
         ]);
 
         $form->handleRequest($request);
@@ -62,11 +61,12 @@ class FormulesController extends AbstractController
 
             // Obtenez les données du formulaire
             $formData = $form->getData();
-            $session = $request->getSession();
+            $uniqId = uniqid();
+            // $session = $request->getSession();
             $cart = $session->get('cart_formule');
-
+            
             // passer les données en tableau avec les formules selectionnées et les produits associés
-            $cart[] = [$formule, $formData];
+            $cart[$uniqId] = [$formule, $formData];
 
             // Ajouter les données du tableau en session
             $session->set('cart_formule', $cart);
@@ -79,10 +79,8 @@ class FormulesController extends AbstractController
 
         return $this->render('formules/show.html.twig', [
             'formule' => $formule,
-            'form' => $form->createView(),
-            // 'formulePrice' => $formulePrice
-            // 'price' => $formule->getPrice(),
-            
+            'form' => $form->createView(),  
+                  
         ]);
     }
 }

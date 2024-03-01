@@ -71,28 +71,5 @@ class Order
     public function getOrderProducts(): Collection
     {
         return $this->orderProducts;
-    }
-
-    public function addOrderProduct(Product $orderProduct): static
-    {
-        if (!$this->orderProducts->contains($orderProduct)) {
-            $this->orderProducts->add($orderProduct);
-            $orderProduct->setOrderProducts($this);
-        }
-
-        return $this;
-    }
-
-    public function removeOrderProduct(Product $orderProduct): static
-    {
-        if ($this->orderProducts->removeElement($orderProduct)) {
-            // set the owning side to null (unless already changed)
-            if ($orderProduct->getOrderProducts() === $this) {
-                $orderProduct->setOrderProducts(null);
-            }
-        }
-
-        return $this;
-    }
-
+    }   
 }

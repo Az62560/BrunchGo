@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Classe\Mail;
+use App\Entity\DeliveryCities;
 use App\Entity\User;
 use App\Form\RegisterType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -42,12 +43,11 @@ class RegisterController extends AbstractController
             //vérification si l'email n'est pas connu de la bdd
             if (!$search_email) {
                 $password = $encoder->hashPassword($user, $user->getPassword());
-            
-                $user->setPassword($password);
 
                 //préparation des données pour l'envoi
                 $this->entityManager->persist($user);
                 //envoi dans la bdd
+              
                 $this->entityManager->flush();
 
                 //envoi d'un mail à l'inscription
