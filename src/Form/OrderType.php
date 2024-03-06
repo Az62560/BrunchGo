@@ -10,6 +10,7 @@ use App\Entity\WorkingDay;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -54,7 +55,10 @@ class OrderType extends AbstractType
             'multiple' => false,
             'expanded' => true, // Afficher les heures sous forme de radio buttons
         ])
-
+        ->add('selected_formule', HiddenType::class, [
+            // Assurez-vous que la valeur est correctement définie à partir des options du formulaire
+            'data' => $options['selected_formule'],
+        ])
 
         // Ajouter le champ pour le bouton de soumission
         ->add('submit', SubmitType::class, [

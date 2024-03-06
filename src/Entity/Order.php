@@ -18,7 +18,7 @@ class Order
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $selected_products = null;
 
     #[ORM\Column]
@@ -37,8 +37,8 @@ class Order
     #[ORM\Column(type: Types::TEXT)]
     private ?string $deliveryAddress = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $selected_formule = null;
+    #[ORM\Column(type: Types::JSON)]
+    private ?array $selected_formule = null;
 
     #[ORM\Column]
     private ?int $state = null;
@@ -46,10 +46,10 @@ class Order
     #[ORM\Column(length: 255)]
     private ?string $reference = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $stripe_session_id = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?float $selected_formule_price = null;
 
     public function __toString()
@@ -135,17 +135,20 @@ class Order
         return $this;
     }
 
-    public function getSelectedFormule(): ?string
-    {
-        return $this->selected_formule;
-    }
-
-    public function setSelectedFormule(string $selected_formule): static
-    {
-        $this->selected_formule = $selected_formule;
-
-        return $this;
-    }
+ 
+    
+        public function getSelectedFormule(): ?array
+        {
+            return $this->selected_formule;
+        }
+    
+        public function setSelectedFormule(?array $selected_formule): static
+        {
+            $this->selected_formule = $selected_formule;
+    
+            return $this;
+        }
+    
 
     public function getState(): ?int
     {

@@ -4,7 +4,6 @@ namespace App\Classe;
 
 use App\Entity\Formules;
 use App\Entity\Product;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -56,47 +55,24 @@ class Cart
         
     }
     
-//   public function delete($uniqId)
+//     public function getFormulePerso(Cart $cart) 
 //     {
-//         $cart = $this->session->get('cart', []);
+//         $formulePerso = [];
 
-//         // Recherche de la formule spécifique dans le panier
-//         foreach ($cart as $index => $item) {
-//             if ($item[''] === $uniqId) {
-//                 // Supprimer la formule spécifique du panier
-//                 unset($cart[$index]);
-//                 // Mettre à jour le panier en session
-//                 $this->session->set('cart', $cart);
-//                 // Retourner true pour indiquer que la suppression a réussi
-//                 return true;
+//         if ($this->get()) {
+//             foreach ($this->get() as $id => $formule) {
+//                 $formule = $this->entityManager->getRepository(Formules::class)->findOneById($id);
+//                 $selectedProductIds = $cart->session->get('selected_products');
+//                 $products = $this->entityManager->getRepository(Product::class)->find(['id' => $selectedProductIds]);
+                
+
+//                 $formulePerso[] = [
+//                     'formule' => $formule,
+//                     'products' => $products,
+//                     'selectedProductIds' => $selectedProductIds,
+//                 ];
 //             }
 //         }
-
-//         // Retourner false si la formule spécifique n'a pas été trouvée dans le panier
-//         return false;
+//         return $formulePerso;
 //     }
-    
-    
-
-
-
-    // public function getFormulePerso(Cart $cart) 
-    // {
-    //     $formulePerso = [];
-
-    //     if ($this->get()) {
-    //         foreach ($this->get() as $id => $products) {
-    //             $selectedProductIds = $cart->session->get('selected_products');
-    //             $products = $this->entityManager->getRepository(Product::class)->find(['id' => $selectedProductIds]);
-    //             $formule = $this->entityManager->getRepository(Formules::class)->find($id);
-
-    //             $formulePerso[] = [
-    //                 'formule' => $formule,
-    //                 'products' => $products,
-    //                 'selectedProductIds' => $selectedProductIds,
-    //             ];
-    //         }
-    //     }
-    //     return $formulePerso;
-    // }
 }

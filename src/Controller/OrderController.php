@@ -35,7 +35,7 @@ class OrderController extends AbstractController
             'workingDays' => $this->entityManager->getRepository(WorkingDay::class)->findByAvailable(1),
             'timeSlots' => $this->entityManager->getRepository(TimeSlots::class)->findByIsFree(1),
         ]);
-
+        
         $session = $request->getSession();
         $selected_formule = $session->get('cart_formule');
         $selectedProducts = $session->get('cart_products');
@@ -43,13 +43,13 @@ class OrderController extends AbstractController
         return $this->render('order/index.html.twig', [
             'form' => $form->createView(),
             'cart' => $cart->get(),
-            'formules' => $selected_formule,
+            'selected_formule' => $selected_formule,
             'selectedProducts' => $selectedProducts,
-        
+        //   dd($selectedProducts),
         ]);
     }
 
-    #[Route('/commande/recapitulatif', name: 'app_order_recap', methods: ['POST'])]
+    #[Route('/commande/recapitulatif', name: 'app_order_recap')]
     public function add(Cart $cart, Request $request): Response
     {
         $order = new Order();
@@ -58,25 +58,29 @@ class OrderController extends AbstractController
       
         $session = $request->getSession();
         $selected_formule = $session->get('cart_formule');
+        // dd($selected_formule);
         $selectedProducts = $session->get('cart_products');
+      
 
         $form = $this->createForm(OrderType::class, $order, [
             'user' => $this->getUser(),
             'workingDays' => $workingDays,
             'timeSlots' => $timeSlots,
             'selected_formule' => $selected_formule,
+           
         ]);
-
+        
         $form->handleRequest($request);
         
         if ($form->isSubmitted() && $form->isValid()) {
             $date = new DateTimeImmutable();
             $formData = $form->getData();
-            
+            //  dd($selected_formule);
             // Récupérer les données du formulaire
             $deliveryAddress = $formData->getDeliveryAddress();
             $deliveryDay = $formData->getDeliveryDay();
             $deliveryHour = $formData->getDeliveryHour();
+            
             // Attribution des valeurs à l'objet Order
             $order->setDeliveryDay($deliveryDay);
             $order->setDeliveryHour($deliveryHour);
@@ -85,31 +89,25 @@ class OrderController extends AbstractController
             $order->setUser($this->getUser());
             $order->setCreatedAt($date);
             $order->setState(0);
-            
-            dd($order);
-            foreach ($selected_formule as $formule) {
-                $order->setSelectedFormule($formule);
-            }
+            $order->setSelectedFormule($selected_formule);
 
-            foreach ($selectedProducts as $product) {
-                $order->setSelectedProducts($product);
-            }
-            
             // Persist the order entity
             $this->entityManager->persist($order);
-            
+            // dd($order);
             // $this->entityManager->flush();
 
-            
-
-            // Redirection après la soumission réussie
-            return $this->redirectToRoute('app_cart'); // Remplacez par la route de votre choix
-        }
-
-        return $this->render('order/add.html.twig', [
+            return $this->render('order/add.html.twig', [
             'cart' => $cart->get(),
             'order' => $order,
-            'form' => $form->createView(),
+            // 'form' => $form->createView(),
+            'reference' => $order->getReference(),    
+            'selected_formule' => $selected_formule,        
         ]);
+
+            
+        }
+        // Redirection après la soumission réussie
+        return $this->redirectToRoute('app_cart'); // Remplacez par la route de votre choix
+        
     }
 }

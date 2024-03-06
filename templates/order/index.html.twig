@@ -4,14 +4,15 @@
 
 {% block main %}
 <div class="container-fluid">
-<h4 class="text-center pt-4">Choisissez vos préférences de livraison</h4><br>
-<div class="row px-5">
-    <div class="col-md-5">
-        {% set formHtml %}
-            {{ form_start(form, {action:path('app_order_recap')}) }}
-                    <a href="{{ path('app_account_address_add') }}">Ajouter une nouvelle adresse</a>
+    <h4 class="text-center pt-4">Choisissez vos préférences de livraison</h4><br>
+    <div class="row px-5">
+        <div class="col-md-5">
+            {% set formHtml %}
+                {{ form_start(form, {action:path('app_order_recap')}) }}
+                <a href="{{ path('app_account_address_add') }}">Ajouter une nouvelle adresse</a>
                 {{ form_end(form) }}
         {% endset %}
+
 
         {{ formHtml|replace({'[br]' : '<br>'})|raw }}
     </div>
@@ -20,7 +21,7 @@
             <b>Récapitulatif du panier</b><br>
         </div>
         <div class="order-summary">
-            {% for key,singleFormule in formules %}
+            {% for key,singleFormule in selected_formule %}
                 <hr><div class="row {% if key > 0 %}mt-2{% endif %}">
                     <div class="col-3">
                         {{ singleFormule.0.name }}<br>

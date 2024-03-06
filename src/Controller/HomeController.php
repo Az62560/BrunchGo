@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Classe\Cart;
 use App\Entity\Formules;
 use App\Entity\Producers;
 use Doctrine\ORM\EntityManagerInterface;
@@ -34,7 +35,8 @@ class HomeController extends AbstractController
 
         return $this->render('home/index.html.twig', [
             'formules' => $formules,
-            'randomP' => $randomP
+            'randomP' => $randomP,
+            
         ]);
     }
 }
