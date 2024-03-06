@@ -41,7 +41,7 @@ class Order
     private ?array $selected_formule = null;
 
     #[ORM\Column]
-    private ?int $state = null;
+    private ?bool $state = null;
 
     #[ORM\Column(length: 255)]
     private ?string $reference = null;
@@ -150,12 +150,12 @@ class Order
         }
     
 
-    public function getState(): ?int
+    public function getState(): ?bool
     {
         return $this->state;
     }
 
-    public function setState(int $state): static
+    public function setState(bool $state): static
     {
         $this->state = $state;
 

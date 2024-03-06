@@ -1,10 +1,15 @@
 {% extends 'base.html.twig' %}
 
+{% block javascript %}
+    <script src="https://js.stripe.com/v3/"></script>
+{% endblock %} 
+
 {% block title %}Finalisez votre commande{% endblock %}
 
 {% block main %}
+
 <div class="container-fluid">
-    <h4 class="text-center pt-4">Récapitulatif avant paiement</h4><br>
+    <h2 class="text-center pt-4">Récapitulatif avant paiement</h2><br>
     <div class="row px-5">
         <div class="col-md-6">
             <ul>
@@ -19,12 +24,13 @@
             </ul>
         </div>
         <div class="col-md-6">
+        {% set total = 0 %}
             {% for key, singleFormule in selected_formule %}
                 <div class="row {% if key > 0 %}mt-2{% endif %}">
                     <div class="col-3">
                         <strong>{{ singleFormule.0.name }}</strong><br><br>
                     </div>
-                    <div class="col-9">
+                    <div class="col-6">
                         <ul>
                             {% for elements in singleFormule.1 %}
                                 {% for item in elements %}
@@ -33,15 +39,19 @@
                             {% endfor %}
                         </ul>
                     </div>
-                    <div class="col-12">
+                    <div class="col-3">
                         <strong>Prix :</strong> {{ (singleFormule.0.price / 100)|number_format(2, ',', '.') }} €
                     </div>
                 </div>
                 {% if not loop.last %}
                     <hr>
                 {% endif %}
+                {% set total = total + singleFormule.0.price %}
             {% endfor %}
         </div>
+        <h4 class="text-end"><strong>Total : </strong>{{ (total / 100)|number_format(2, ',', '.') }} €</h4>
+        <hr>
+        <a class="d-grid gap-2 col-5 mx-auto btn btn-primary my-4" id="checkout-button">Payer {{ (total /100)|number_format(2, ',', '.')  }}€</a>
     </div>
 </div>
 {% endblock %}

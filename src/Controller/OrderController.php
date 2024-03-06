@@ -9,6 +9,8 @@ use App\Entity\WorkingDay;
 use App\Form\OrderType;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
+use Stripe\Checkout\Session;
+use Stripe\Stripe;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -89,6 +91,7 @@ class OrderController extends AbstractController
             $order->setUser($this->getUser());
             $order->setCreatedAt($date);
             $order->setState(0);
+            
             $order->setSelectedFormule($selected_formule);
 
             // Persist the order entity
@@ -96,6 +99,33 @@ class OrderController extends AbstractController
             // dd($order);
             // $this->entityManager->flush();
 
+        // Stripe::setApiKey('sk_test_51OqXJJGKBR4VtUNOHET0EXnbApLTeWQPdEz3dy1PSBM3qkGeuXVkZ4y6tXgZ1xk3dYRZFwE3IA90L3EmxOIegeR800yEJPVYLN');
+  
+        // $YOUR_DOMAIN = 'http://178.33.104.60:8001';
+
+        // $checkout_session = Session::create([
+        //     'payment_method_types' => ['card'],
+        //     'line_items' => [
+        //         'price_data' => [
+        //             'currency' => 'eur',
+        //             'unit_amount' => 2000,
+        //             'product_data' => [
+        //                 'name' => 'test',
+        //                 'images' => [$YOUR_DOMAIN],
+        //             ],
+        //         ],
+        //         'quantity' => 1,
+        //     ], 
+        //     'mode' => 'payment',
+        //     'success_url' => $YOUR_DOMAIN . '/success.html',
+        //     'cancel_url' => $YOUR_DOMAIN . '/cancel.html',
+            
+        // ]);
+            
+
+        //     dump($checkout_session->id);
+        //     dd($checkout_session);
+       
             return $this->render('order/add.html.twig', [
             'cart' => $cart->get(),
             'order' => $order,
