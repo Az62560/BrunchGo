@@ -5,9 +5,8 @@ namespace App\Controller;
 use App\Classe\Cart;
 use App\Entity\Formules;
 use App\Entity\Order;
-use Stripe\Stripe;
 use Doctrine\ORM\EntityManagerInterface;
-use Stripe\Checkout\Session;
+use Stripe\StripeClient;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,11 +15,14 @@ use Symfony\Component\Routing\Attribute\Route;
 class StripeController extends AbstractController
 {
     #[Route('/commande/create-session/{reference}', name: 'app_stripe_create_session')]
-    public function index(EntityManagerInterface $entityManager, Cart $cart, $reference): Response
+    public function index(EntityManagerInterface $entityManager, Cart $cart, $reference, $selected_formules): Response
     {
 
-        $products_for_stripe = [];
-        $YOUR_DOMAIN = 'http://178.33.104.60:8001';
+        $stripe = new StripeClient('sk_test_51OqXJJGKBR4VtUNOHET0EXnbApLTeWQPdEz3dy1PSBM3qkGeuXVkZ4y6tXgZ1xk3dYRZFwE3IA90L3EmxOIegeR800yEJPVYLN');
+
+        // Création des lignes de commande pour Stripe
+        $lineItems = [];
+        $total = 0;
 
         $order = $entityManager->getRepository(Order::class)->findOneByReference($reference);
 
@@ -28,37 +30,49 @@ class StripeController extends AbstractController
             new JsonResponse(['error' => 'order']);
         }
 
-        foreach ($order->getSelectedFormule()->getValues() as $formules) {
-            $formules = $entityManager->getRepository(Formules::class)->findOneByName($formules);
-            $products_for_stripe[] = [
+        foreach ($selected_formules as $formuleArray) {
+            // $formule = $entityManager->getRepository(Formules::class)->findOneByName($formuleArray[0]->getName());
+            $formule = $formuleArray[0]; // Récupérer l'objet Formule
+            $formulePrice = $formule->getPrice(); // Obtenir le prix de la formule
+            $total += $formulePrice; // Ajouter le prix de la formule au total
+            
+            // Créer l'élément pour la session Stripe
+            $lineItems[] = [
                 'price_data' => [
-                'currency' => 'eur',
-                'unit_amount' => $formules->getPrice(),
-                'product_data' => [
-                    'name' => $formules->getName(),
+                    'unit_amount' => $formulePrice, // Montant en centimes
+                    'currency' => 'eur', // Devise de la transaction en euro
+                    'product_data' => [
+                        'name' => $formule->getName(),
+                    ],
                 ],
-            ],
-            'quantity' => $formules->getQuantity(),
-        ]; 
+                'quantity' => 1, // Quantité
+            ];
         }
-
-        Stripe::setApiKey('sk_test_51OqXJJGKBR4VtUNOHET0EXnbApLTeWQPdEz3dy1PSBM3qkGeuXVkZ4y6tXgZ1xk3dYRZFwE3IA90L3EmxOIegeR800yEJPVYLN');
-  
-        $checkout_session = Session::create([
-            'customer_email' => $this->getUser()->getEmail(),
+        // dd($lineItems);
+        // Création de la session Stripe
+        $session = $stripe->checkout->sessions->create([
+            'success_url' => 'http://178.33.104.60:8001',
+            'cancel_url' => 'http://178.33.104.60:8001',
             'payment_method_types' => ['card'],
-            'line_items' => [
-                $products_for_stripe
-            ],
+            'line_items' => $lineItems,
             'mode' => 'payment',
-            'success_url' => $YOUR_DOMAIN . '/commande/merci/{CHECKOUT_SESSION_ID}',
-            'cancel_url' => $YOUR_DOMAIN . '/commande/erreur/{CHECKOUT_SESSION_ID}',
         ]);
 
-        $order->setStripeSessionId($checkout_session->id);
-        $entityManager->flush();
+        return $this->render('order/add.html.twig', [
+            'cart' => $cart->get(),
+            'order' => $order,
+            'reference' => $order->getReference(),
+            'selected_formules' => $selected_formules,
+            'stripe_session_id' => $session->id, // Passer l'identifiant de la session Stripe à la vue
+        ]);
+        $order->setStripeSessionId($session->id);
+        // $entityManager->flush();
 
-        $response = new JsonResponse(['id' => $checkout_session->id]);
+        $response = new JsonResponse(['id' => $session->id]);
         return $response;
+ 
+
+
+        return $this->render('stripe/index.html.twig');
     }
 }

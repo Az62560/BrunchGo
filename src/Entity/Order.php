@@ -52,6 +52,9 @@ class Order
     #[ORM\Column(nullable: true)]
     private ?float $selected_formule_price = null;
 
+    #[ORM\Column]
+    private ?float $total = null;
+
     public function __toString()
     {
         return $this->getSelectedProducts();
@@ -194,6 +197,19 @@ class Order
     public function setSelectedFormulePrice(float $selected_formule_price): static
     {
         $this->selected_formule_price = $selected_formule_price;
+
+        return $this;
+    }
+
+    public function getTotal(): ?float
+    {
+        return $this->total;
+    }
+
+    public function setTotal(float $total): static
+    {
+        $this->total = $total;
+        
 
         return $this;
     }   
