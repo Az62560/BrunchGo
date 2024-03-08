@@ -20,7 +20,14 @@ class OrderRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Order::class);
     }
-
+    public function findOneByStripeSessionId(string $stripe_session_id): ?Order
+    {
+        return $this->createQueryBuilder('o')
+            ->andWhere('o.stripe_session_id = :stripe_session_id')
+            ->setParameter('stripe_session_id', $stripe_session_id)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 //    /**
 //     * @return Order[] Returns an array of Order objects
 //     */

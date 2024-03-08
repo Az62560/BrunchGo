@@ -89,4 +89,5 @@ class TimeSlots
 
         return $this;
     }
+    
 }

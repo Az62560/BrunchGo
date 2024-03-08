@@ -3,7 +3,8 @@
 {% block title %}Mon panier - Brunch Go{% endblock %}
 
 {% block main %}
-<div class="container-fluid" id="cart">
+<div class="container-fluid " id="cart">
+
     <h1 class="mb-4">Panier</h1>
     <table class="table bg-success bg-opacity-50">
     {% if formules is not empty %}
@@ -19,10 +20,11 @@
             {% for key, singleFormule in formules %}
                 <tr>
                     <td>{{ singleFormule.0.name }}</td> 
-
+{# <li>{{ singleFormule.0.illustration }}</li> #}
                     <td>{% for elements in singleFormule.1 %}
                             {% for item in elements %}
-                                <li>{{ item.name }}</li>                   
+                                <li>{{ item.name }}</li>    
+                                                 
                                  
 
                             {% endfor %}   
@@ -43,4 +45,5 @@
     </div>
     {% endif %}
 </div>
+
 {% endblock %}

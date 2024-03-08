@@ -24,6 +24,8 @@ class StripeController extends AbstractController
     #[Route('/commande/create-session/{reference}/{selected_formule}', name: 'app_stripe_create_session')]
     public function stripeCheckout(Cart $cart, $reference, Request $request, $selected_formule): RedirectResponse
     { 
+        $order = $this->entityManager->getRepository(Order::class)->findOneByReference($reference);
+
         $session = $request->getSession();
         $cartFormules = $session->get('cart_formule');
     
@@ -55,28 +57,32 @@ class StripeController extends AbstractController
                         'unit_amount' => $formulePrice,
                         'currency' => 'eur',
                         'product_data' => [
-                            'name' => $formule->getName(),
-                          
+                            'name' => $formule->getName(),                          
                         ],
                     ],
                     'quantity' => 1,
                 ];  
             }
         }
-        
+        // dd($lineItems);
         // Création de la session Stripe
-        $checkout = Session::create([
+        $checkout_session = Session::create([
             'customer_email' => $this->getUser()->getEmail(),
-            'success_url' => 'http://178.33.104.60:8001/success.html',
-            'cancel_url' => 'http://178.33.104.60:8001/cancel.html',
+            'success_url' => 'http://178.33.104.60:8001/commande/merci/{CHECKOUT_SESSION_ID}',
+            'cancel_url' => 'http://178.33.104.60:8001/commande/erreur/{CHECKOUT_SESSION_ID}',
             'payment_method_types' => ['card'],
             'line_items' => $lineItems,
             'mode' => 'payment',
         ]);
+        
 
+        $order->setStripeSessionId($checkout_session->id);
+        $this->entityManager->flush();
         // Faites quelque chose avec $checkout si nécessaire
-        return new RedirectResponse($checkout->url, 303);
+        return new RedirectResponse($checkout_session->url, 303);
         // Redirection vers une autre page ou traitement supplémentaire
         // return $this->redirectToRoute('app_formules');
+
+        
     }
 }

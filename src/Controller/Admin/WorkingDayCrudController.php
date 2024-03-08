@@ -23,5 +23,12 @@ class WorkingDayCrudController extends AbstractCrudController
             AssociationField::new('timeSlots', 'Créneau horaire'),
         ];
     }
-    
+    public function newEntity(): WorkingDay
+    {
+        $workingDay = new WorkingDay();
+        // Définir le jour de la semaine par défaut comme la date d'aujourd'hui plus 2 jours
+        $workingDay->setDayOfWeek((new \DateTimeImmutable())->modify('+2 days')->format('l'));
+        
+        return $workingDay;
+    }
 }
