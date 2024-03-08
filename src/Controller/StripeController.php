@@ -1,78 +1,82 @@
 <?php
-
 namespace App\Controller;
 
 use App\Classe\Cart;
 use App\Entity\Formules;
 use App\Entity\Order;
 use Doctrine\ORM\EntityManagerInterface;
-use Stripe\StripeClient;
+use Stripe\Checkout\Session;
+use Stripe\Stripe;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
 class StripeController extends AbstractController
 {
-    #[Route('/commande/create-session/{reference}', name: 'app_stripe_create_session')]
-    public function index(EntityManagerInterface $entityManager, Cart $cart, $reference, $selected_formules): Response
-    {
+    private EntityManagerInterface $entityManager;
 
-        $stripe = new StripeClient('sk_test_51OqXJJGKBR4VtUNOHET0EXnbApLTeWQPdEz3dy1PSBM3qkGeuXVkZ4y6tXgZ1xk3dYRZFwE3IA90L3EmxOIegeR800yEJPVYLN');
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+
+    #[Route('/commande/create-session/{reference}/{selected_formule}', name: 'app_stripe_create_session')]
+    public function stripeCheckout(Cart $cart, $reference, Request $request, $selected_formule): RedirectResponse
+    { 
+        $session = $request->getSession();
+        $cartFormules = $session->get('cart_formule');
+    
+        // Assurez-vous que les données des formules sont disponibles
+        if (!$cartFormules) {
+            // Rediriger si les données ne sont pas disponibles
+            return $this->redirectToRoute('app_cart');
+        }
+    
+        // Initialisez un tableau pour stocker les noms des formules
+        
+
+        Stripe::setApiKey('sk_test_51OqXJJGKBR4VtUNOHET0EXnbApLTeWQPdEz3dy1PSBM3qkGeuXVkZ4y6tXgZ1xk3dYRZFwE3IA90L3EmxOIegeR800yEJPVYLN');
 
         // Création des lignes de commande pour Stripe
         $lineItems = [];
-        $total = 0;
-
-        $order = $entityManager->getRepository(Order::class)->findOneByReference($reference);
-
-        if (!$order) {
-            new JsonResponse(['error' => 'order']);
-        }
-
-        foreach ($selected_formules as $formuleArray) {
-            // $formule = $entityManager->getRepository(Formules::class)->findOneByName($formuleArray[0]->getName());
-            $formule = $formuleArray[0]; // Récupérer l'objet Formule
-            $formulePrice = $formule->getPrice(); // Obtenir le prix de la formule
-            $total += $formulePrice; // Ajouter le prix de la formule au total
-            
-            // Créer l'élément pour la session Stripe
-            $lineItems[] = [
-                'price_data' => [
-                    'unit_amount' => $formulePrice, // Montant en centimes
-                    'currency' => 'eur', // Devise de la transaction en euro
-                    'product_data' => [
-                        'name' => $formule->getName(),
+        $formuleNames = [];
+        $formulePrice = [];
+    
+        // Parcourez les données des formules pour extraire les noms
+        foreach ($cartFormules as $formuleData) {
+            if (!empty($formuleData[0])) {
+                $formule = $formuleData[0];
+                $formuleNames[] = $formule->getName();
+                $formulePrice = $formule->getPrice(); // Prix de la formule actuelle
+                // Créer l'élément pour la session Stripe pour cette formule spécifique
+                $lineItems[] = [
+                    'price_data' => [
+                        'unit_amount' => $formulePrice,
+                        'currency' => 'eur',
+                        'product_data' => [
+                            'name' => $formule->getName(),
+                          
+                        ],
                     ],
-                ],
-                'quantity' => 1, // Quantité
-            ];
+                    'quantity' => 1,
+                ];  
+            }
         }
-        // dd($lineItems);
+        
         // Création de la session Stripe
-        $session = $stripe->checkout->sessions->create([
-            'success_url' => 'http://178.33.104.60:8001',
-            'cancel_url' => 'http://178.33.104.60:8001',
+        $checkout = Session::create([
+            'customer_email' => $this->getUser()->getEmail(),
+            'success_url' => 'http://178.33.104.60:8001/success.html',
+            'cancel_url' => 'http://178.33.104.60:8001/cancel.html',
             'payment_method_types' => ['card'],
             'line_items' => $lineItems,
             'mode' => 'payment',
         ]);
 
-        return $this->render('order/add.html.twig', [
-            'cart' => $cart->get(),
-            'order' => $order,
-            'reference' => $order->getReference(),
-            'selected_formules' => $selected_formules,
-            'stripe_session_id' => $session->id, // Passer l'identifiant de la session Stripe à la vue
-        ]);
-        $order->setStripeSessionId($session->id);
-        // $entityManager->flush();
-
-        $response = new JsonResponse(['id' => $session->id]);
-        return $response;
- 
-
-
-        return $this->render('stripe/index.html.twig');
+        // Faites quelque chose avec $checkout si nécessaire
+        return new RedirectResponse($checkout->url, 303);
+        // Redirection vers une autre page ou traitement supplémentaire
+        // return $this->redirectToRoute('app_formules');
     }
 }

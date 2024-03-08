@@ -25,7 +25,7 @@
         </div>
         <div class="col-md-6">
         {% set total = 0 %}
-            {% for key, singleFormule in selected_formules %}
+            {% for key, singleFormule in selected_formule %}
                 <div class="row {% if key > 0 %}mt-2{% endif %}">
                     <div class="col-3">
                         <strong>{{ singleFormule.0.name }}</strong><br><br>
@@ -51,36 +51,38 @@
         </div>
         <h4 class="text-end"><strong>Total : </strong>{{ (total / 100)|number_format(2, ',', '.') }} €</h4>
         <hr>
-        <a class="d-grid gap-2 col-5 mx-auto btn btn-primary my-4" id="checkout-button">Payer {{ (total /100)|number_format(2, ',', '.')  }}€</a>
+        <form action="{{ path('app_stripe_create_session', {reference: reference, selected_formule: selected_formule|json_encode}) }}" method="post">
+        <button class="d-grid gap-2 col-5 mx-auto btn btn-primary my-4">Payer {{ (total /100)|number_format(2, ',', '.')  }}€</button>
+        </form>
     </div>
 </div>
 {% endblock %}
 {% block script %}
-<script type="text/javascript">
-        var stripe = Stripe("pk_test_51OqXJJGKBR4VtUNOdno4aJjdWPAraJbiGmkmcWIAtr13IdgIGakrE9NkNjQSObQhGUZ8yiYUiYElXL0DUDuCh9rG00j018z2YV");
-        var checkoutButton = document.getElementById("checkout-button");
-        checkoutButton.addEventListener("click", function () {
-                fetch("/commande/create-session/{ reference }", {
-                    method: "POST",
-                })
-                .then(function (response) {
-                    return response.json();
-                })
-                .then(function (session) {
-                    if (session.error == 'app_order') {
-                        window.location.replace('{{ path('app_order') }}');
-                    } else {
-                        return stripe.redirectToCheckout({ sessionId: session.id });
-                    }
-                })
-                .then(function (result) { 
-                    if(result.error) {
-                        alert(result.error.message);
-                    }
-                })
-                .catch(function (error) {
-                    console.error("Error:", error);
-                });
-        });
-</script>
+{# // <script type="text/javascript"> #}
+{# //         var stripe = Stripe("pk_test_51OqXJJGKBR4VtUNOdno4aJjdWPAraJbiGmkmcWIAtr13IdgIGakrE9NkNjQSObQhGUZ8yiYUiYElXL0DUDuCh9rG00j018z2YV");
+//         var checkoutButton = document.getElementById("checkout-button");
+//         checkoutButton.addEventListener("click", function () {
+//                 fetch("/commande/create-session/{{ reference }}", {
+//                     method: "POST",
+//                 })
+//                 .then(function (response) {
+//                     return response.json();
+//                 })
+//                 .then(function (session) {
+//                     if (session.error == 'app_order') {
+//                         window.location.replace('{{ path('app_order') }}');
+//                     } else {
+//                         return stripe.redirectToCheckout({ sessionId: session.id });
+//                     }
+//                 })
+//                 .then(function (result) { 
+//                     if(result.error) {
+//                         alert(result.error.message);
+//                     }
+//                 })
+//                 .catch(function (error) {
+//                     console.error("Error:", error);
+//                 });
+//         }); #}
+{# // </script> #}
 {% endblock %}
