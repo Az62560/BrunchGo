@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes commandes{% endblock %}
+
+{% block main %}
+    <h2>Mes commandes</h2>
+    Dans cet espace vous pouvez gérer toutes vos commandes.<br>
+    <a href="{{ path('app_account')}}">Retour</a>
+    <hr>
+    {% if orders|length == 0 %}
+        <p class="text-center">
+        Vous n'avez pas encore passé de commande sur notre boutique en ligne</a>.
+        </p>
+    {% else %}
+        <table class="table mt-4">
+            <thead>
+            <tr>
+                <th scope="col">Référence</th>
+                <th scope="col">Statut</th>
+                <th scope="col">Passé le</th>
+                <th scope="col">Total</th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for order in orders %}
+                {{dump(orders)}}
+                <tr>
+                    <td><span class="badge rounded-pill text-bg-secondary">{{ order.reference }}</span></td>
+                    <td>
+                        {% if order.state == 1 %}
+                            Payée
+                        {% elseif order.state == 2 %}
+                            Livraison en cours
+                        {% endif %}
+                    </td>
+                    <td>{{ order.createdAt|date('d/m/Y') }}</td>
+                    <td>{{ (order.total /100)|number_format(2, ',', '.')   }}€</td>
+                    <td class="text-end"><a href="{{ path('app_account_order_show', {'reference' : order.reference}) }}">Voir ma commande</a></td>                                    
+                {% if not loop.last %}         
+                {% endif %}                                 
+                </tr>  
+            {% endfor %}
+            </tbody>
+        </table>             
+    {% endif %}  
+{% endblock %}
+

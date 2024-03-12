@@ -20,6 +20,7 @@ class OrderRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Order::class);
     }
+    
     public function findOneByStripeSessionId(string $stripe_session_id): ?Order
     {
         return $this->createQueryBuilder('o')
@@ -27,6 +28,17 @@ class OrderRepository extends ServiceEntityRepository
             ->setParameter('stripe_session_id', $stripe_session_id)
             ->getQuery()
             ->getOneOrNullResult();
+    }
+
+    public function findSuccessOrders($user)
+    {
+        return $this->createQueryBuilder('o')
+        ->andWhere('o.state > 0')
+        ->andWhere('o.user = :user')
+        ->setParameter('user', $user)
+        ->orderBy('o.id', 'DESC')
+        ->getQuery()
+        ->getResult();
     }
 //    /**
 //     * @return Order[] Returns an array of Order objects

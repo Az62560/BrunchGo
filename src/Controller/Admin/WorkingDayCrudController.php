@@ -6,6 +6,7 @@ use App\Entity\WorkingDay;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 class WorkingDayCrudController extends AbstractCrudController
@@ -20,15 +21,8 @@ class WorkingDayCrudController extends AbstractCrudController
         return [
             TextField::new('dayOfWeek', 'Jours de livraion'),
             BooleanField::new('available', 'Disponible'),
+            // DateField::new('deliveryDate', 'Date de livraison'),
             AssociationField::new('timeSlots', 'Créneau horaire'),
         ];
-    }
-    public function newEntity(): WorkingDay
-    {
-        $workingDay = new WorkingDay();
-        // Définir le jour de la semaine par défaut comme la date d'aujourd'hui plus 2 jours
-        $workingDay->setDayOfWeek((new \DateTimeImmutable())->modify('+2 days')->format('l'));
-        
-        return $workingDay;
     }
 }

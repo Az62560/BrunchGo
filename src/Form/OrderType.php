@@ -60,6 +60,10 @@ class OrderType extends AbstractType
             'data' => $options['selected_formule'],
         ])
 
+        ->add('selected_products', HiddenType::class, [
+            'data' => $options['selected_products'],        
+            ])
+
         // Ajouter le champ pour le bouton de soumission
         ->add('submit', SubmitType::class, [
             'label' => 'Valider ma commande',
@@ -78,6 +82,7 @@ class OrderType extends AbstractType
             'workingDays' => [],
             'timeSlots' => [],
             'selected_formule' => [],
+            'selected_products' => [],
         ]);
     }
 }

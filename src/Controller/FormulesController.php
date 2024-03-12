@@ -71,7 +71,7 @@ class FormulesController extends AbstractController
             // Ajouter les données du tableau en session
             $session->set('cart_formule', $cart);
             $session->set('cart_products', $formData);
-
+            
             // redirection vers la page "mon-panier"
             return $this->redirectToRoute('app_cart');
             

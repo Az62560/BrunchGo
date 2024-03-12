@@ -18,8 +18,8 @@ class Order
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $selected_products = null;
+    #[ORM\Column(type: Types::JSON)]
+    private ?array $selected_products = null;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $created_at = null;
@@ -55,28 +55,23 @@ class Order
     #[ORM\Column]
     private ?float $total = null;
 
-    public function __toString()
-    {
-        return $this->getSelectedProducts();
-        return $this->getSelectedFormule();
-    }
-
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getSelectedProducts(): ?string
+    public function getSelectedProducts(): ?array
     {
         return $this->selected_products;
     }
-
-    public function setSelectedProducts(string $selected_products): static
+    
+    public function setSelectedProducts(?array $selected_products): static
     {
         $this->selected_products = $selected_products;
-
+    
         return $this;
     }
+
 
     public function getCreatedAt(): ?\DateTimeImmutable
     {

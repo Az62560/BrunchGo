@@ -1,6 +1,60 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <script src="{{ asset('asset/tarteaucitron/tarteaucitron.js') }}"></script>
+
+        <script type="text/javascript">
+        tarteaucitron.init({
+    	  "privacyUrl": "", /* Privacy policy url */
+          "bodyPosition": "bottom", /* or top to bring it as first element for accessibility */
+
+    	  "hashtag": "#tarteaucitron", /* Open the panel with this hashtag */
+    	  "cookieName": "tarteaucitron", /* Cookie name */
+    
+    	  "orientation": "middle", /* Banner position (top - bottom) */
+       
+          "groupServices": false, /* Group services by category */
+          "showDetailsOnClick": true, /* Click to expand the description */
+          "serviceDefaultState": "wait", /* Default state (true - wait - false) */
+                           
+    	  "showAlertSmall": false, /* Show the small banner on bottom right */
+    	  "cookieslist": false, /* Show the cookie list */
+                           
+          "closePopup": false, /* Show a close X on the banner */
+
+          "showIcon": true, /* Show cookie icon to manage cookies */
+          //"iconSrc": "", /* Optionnal: URL or base64 encoded image */
+          "iconPosition": "BottomRight", /* BottomRight, BottomLeft, TopRight and TopLeft */
+
+    	  "adblocker": false, /* Show a Warning if an adblocker is detected */
+                           
+          "DenyAllCta" : true, /* Show the deny all button */
+          "AcceptAllCta" : true, /* Show the accept all button when highPrivacy on */
+          "highPrivacy": true, /* HIGHLY RECOMMANDED Disable auto consent */
+                           
+    	  "handleBrowserDNTRequest": false, /* If Do Not Track == 1, disallow all */
+
+    	  "removeCredit": false, /* Remove credit link */
+    	  "moreInfoLink": true, /* Show more info link */
+
+          "useExternalCss": false, /* If false, the tarteaucitron.css file will be loaded */
+          "useExternalJs": false, /* If false, the tarteaucitron.js file will be loaded */
+
+    	  //"cookieDomain": ".my-multisite-domaine.fr", /* Shared cookie for multisite */
+                          
+          "readmoreLink": "", /* Change the default readmore link */
+
+          "mandatory": true, /* Show a message about mandatory cookies */
+          "mandatoryCta": true, /* Show the disabled accept button when mandatory on */
+    
+          //"customCloserId": "", /* Optional a11y: Custom element ID used to open the panel */
+          
+          "googleConsentMode": true, /* Enable Google Consent Mode v2 for Google ads and GA4 */
+          
+          "partnersList": false /* Show the number of partners on the popup/middle banner */
+        });
+        </script>
+
         <meta charset="UTF-8">
         <title>{% block title %}{% endblock %}</title>
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,6 +69,7 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
         <script src="{{ asset('build/vendor.js') }}" defer></script>
         <script src="{{ asset('asset/js/bootstrap.bundle.min.js') }}" defer></script>
+        
         {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}
         {% endblock %}
@@ -55,7 +110,7 @@
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             <a class="dropdown-item" href="{{ path('app_account')}}">Mon compte</a>
-            <a class="dropdown-item" href="#">Mes commandes</a>
+            <a class="dropdown-item" href="{{ path('app_account_order')}}">Mes commandes</a>
             <a class="dropdown-item" href="{{ path('app_account_address')}}">Mes adresses</a>
             <a class="dropdown-item" href="{{ path('app_account_password')}}">Réinitialiser son mot de passe</a>
             <a class="dropdown-item" href="{{ path('app_logout')}}">Se déconnecter </a>
@@ -84,7 +139,6 @@
 </nav>
 {# navbar end #}
 <div class="main">
-
 
 {# carousel #}
 {% if block('carousel') is defined %}
@@ -121,14 +175,13 @@
 {# main end #}
 {# footer #}
 <footer class="container-fluid py-4 text-center" id="footer"> 
-        <a href="">Conditions générales de vente</a>
+        <a href="{{ path('app_cgv')}}">Conditions générales de vente</a>
 </footer> 
 {# footer end #}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     </body>
-{% block script %}
-{% endblock %}
+
 </html>
 
