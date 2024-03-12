@@ -18,8 +18,8 @@ class Order
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::JSON)]
-    private ?array $selected_products = null;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $selected_products = null;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $created_at = null;
@@ -37,7 +37,7 @@ class Order
     #[ORM\Column(type: Types::TEXT)]
     private ?string $deliveryAddress = null;
 
-    #[ORM\Column(type: Types::JSON)]
+    #[ORM\Column(type: Types::JSON, nullable: true)]
     private ?array $selected_formule = null;
 
     #[ORM\Column]
@@ -55,20 +55,28 @@ class Order
     #[ORM\Column]
     private ?float $total = null;
 
+    #[ORM\OneToMany(targetEntity: OrderDetails::class, mappedBy: 'myOrder')]
+    private Collection $orderDetails;
+
+    public function __construct()
+    {
+        $this->orderDetails = new ArrayCollection();
+    }
+
+    
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getSelectedProducts(): ?array
+    public function getSelectedProducts(): ?string
     {
         return $this->selected_products;
     }
-    
-    public function setSelectedProducts(?array $selected_products): static
+    public function setSelectedProducts(string $selected_products): static
     {
         $this->selected_products = $selected_products;
-    
         return $this;
     }
 
@@ -207,5 +215,35 @@ class Order
         
 
         return $this;
-    }   
+    }
+
+    /**
+     * @return Collection<int, OrderDetails>
+     */
+    public function getOrderDetails(): Collection
+    {
+        return $this->orderDetails;
+    }
+
+    public function addOrderDetail(OrderDetails $orderDetail): static
+    {
+        if (!$this->orderDetails->contains($orderDetail)) {
+            $this->orderDetails->add($orderDetail);
+            $orderDetail->setMyOrder($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrderDetail(OrderDetails $orderDetail): static
+    {
+        if ($this->orderDetails->removeElement($orderDetail)) {
+            // set the owning side to null (unless already changed)
+            if ($orderDetail->getMyOrder() === $this) {
+                $orderDetail->setMyOrder(null);
+            }
+        }
+
+        return $this;
+    }
 }

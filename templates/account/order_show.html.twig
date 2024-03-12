@@ -3,14 +3,13 @@
 {% block title %}Détails de la commande {{ order.reference }}{% endblock %}
 
 {% block main %}
-{% if lineItems %}
-    <h3>Formules commandées :</h3>
-    {% for item in lineItems %}
-        <h4>{{ item.product_data.name }}</h4>
-        <p>Prix : {{ item.price_data.unit_amount }}</p>
-    {% endfor %}
-{% else %}
-    <p>Aucune formule n'a été commandée.</p>
-{% endif %}
 
+    <h3>Formules commandées :</h3>
+    {% for formule in formuleData %}
+        <h4>{{ formule }}</h4>
+    {% endfor %}
+    {% for products in productsData %}
+        <p>{{ products }}</p>
+    {% endfor %}
+    
 {% endblock %}

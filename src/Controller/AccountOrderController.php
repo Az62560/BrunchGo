@@ -21,21 +21,20 @@ class AccountOrderController extends AbstractController
     }
 
     #[Route('/compte/mes-commandes', name: 'app_account_order')]
-    public function index($session): Response
+    public function index(): Response
     {
         $orders = $this->entityManager->getRepository(Order::class)->findSuccessOrders($this->getUser());
-        $selected_formule = $session->get('selected_formule');
+    
         return $this->render('account/order.html.twig', [
             'orders' => $orders,
-         
-           'formuleData' => $orders->getSelectedFormule(),
+
 
         ]);
     }
 
     #[Route('/compte/mes-commandes/{reference}', name: 'app_account_order_show')]
 
-    public function show(Cart $cart, Request $request, $reference): Response
+    public function show($reference): Response
     {
         $order = $this->entityManager->getRepository(Order::class)->findOneByReference($reference);
         
@@ -43,15 +42,23 @@ class AccountOrderController extends AbstractController
             return $this->redirectToRoute('app_account_order');
         }
     
-        // Récupérez les données de formule et de produit associées à la commande
-        $formuleData = $order->getSelectedFormule();
+    $formuleData = [];
+    $productsData = [];
+
+    $orderDetails = $order->getOrderDetails();
+
+    foreach ($orderDetails as $orderDetail) {
+        $formuleData[] = $orderDetail->getFormule();
+        $productsData[] = $orderDetail->getProducts();
+    }
+        
     
         // Passez les données de formule à la vue Twig
         return $this->render('account/order_show.html.twig', [
-            'cart' => $cart->get(),
             'order' => $order,
             'reference' => $order->getReference(),
-           
+            'formuleData' => $formuleData,
+            'productsData' => $productsData,
         ]);
     }
     

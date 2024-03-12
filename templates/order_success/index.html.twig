@@ -4,9 +4,6 @@
 
 {% block main %}
     <h2>Confirmation de commande</h2>
-<pre>
-    {{ dump(order) }}
-</pre>
     <p>
         Bonjour <strong>{{ order.user.firstname }} {{ order.user.lastname }}</strong>,<br><br>
         Nous vous remercions pour votre commande n° <strong>{{ order.reference }}</strong>.<br>
