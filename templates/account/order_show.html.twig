@@ -5,11 +5,10 @@
 {% block main %}
 
     <h3>Formules commandées :</h3>
-    {% for formule in formuleData %}
-        <h4>{{ formule }}</h4>
-    {% endfor %}
-    {% for products in productsData %}
-        <p>{{ products }}</p>
+    {% for index, formule in orderDetails %}
+        <h4>Formule {{ index + 1 }} : {{ formule.formule }}</h4>
+        <p>Produits associés : {{ formule.products }}</p>
+        <p>Prix de la formule : {{ (formule.price / 100)|number_format(2, ',', '.') }} €</p>
     {% endfor %}
     
 {% endblock %}

@@ -57,6 +57,7 @@ class AccountOrderController extends AbstractController
         return $this->render('account/order_show.html.twig', [
             'order' => $order,
             'reference' => $order->getReference(),
+            'orderDetails' => $orderDetails,
             'formuleData' => $formuleData,
             'productsData' => $productsData,
         ]);

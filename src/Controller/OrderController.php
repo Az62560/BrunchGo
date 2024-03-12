@@ -113,7 +113,7 @@ class OrderController extends AbstractController
 foreach ($selected_formule as $formuleData) {
     // Créer une nouvelle instance d'OrderDetails pour chaque formule
     $orderDetails = new OrderDetails();
-
+dd($selected_formule);
     // Récupérer les données de la formule
     $formule = $formuleData[0];
     $formuleName = $formule->getName();
@@ -135,6 +135,7 @@ foreach ($selected_formule as $formuleData) {
         foreach ($productCollection as $product) {
             // Ajouter le nom du produit au tableau des noms de produits
             $productNames[] = $product->getName();
+           
         }
     }
 
