@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\DeliveryCities;
 use App\Entity\Category;
+use App\Entity\DaySchedule;
 use App\Entity\Formules;
 use App\Entity\Order;
 use App\Entity\Producers;
@@ -58,8 +59,9 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Formules', 'fa fa-store', Formules::class);
         yield MenuItem::linkToCrud('Producteurs', 'fa fa-address-card', Producers::class);
         yield MenuItem::linkToCrud('Villes de livraison', 'fa fa-city', DeliveryCities::class);
-        yield MenuItem::linkToCrud('Jours et heures de livraison', 'fa fa-clock', WorkingDay::class);
+        // yield MenuItem::linkToCrud('Jours et heures de livraison', 'fa fa-clock', WorkingDay::class);
         yield MenuItem::linkToCrud('heures disponible', 'fa fa-clock', TimeSlots::class);
+        yield MenuItem::linkToCrud('Jours et heure de livraison', 'fa fa-clock', DaySchedule::class);
         yield MenuItem::linkToCrud('Détails des commandes', 'fa fa-barcode', Order::class);
         
         yield MenuItem::linkToUrl('Revenir au site', 'fa fa-arrow-left', '/');

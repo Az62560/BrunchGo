@@ -3,12 +3,15 @@
 namespace App\Controller;
 
 use App\Classe\Cart;
+use App\Entity\DaySchedule;
 use App\Entity\Formules;
 use App\Entity\Order;
 use App\Entity\OrderDetails;
 use App\Entity\TimeSlots;
 use App\Entity\WorkingDay;
 use App\Form\OrderType;
+use DateInterval;
+use DateTime;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -25,18 +28,29 @@ class OrderController extends AbstractController
         $this->entityManager = $entityManager;
     }
 
+    
     #[Route('/commande', name: 'app_order')]
     public function index(Cart $cart, Request $request): Response
     {
-
         if (!$this->getUser()->getAddresses()->getValues()) {
             return $this->redirectToRoute('app_account_address_add');
         } 
+
+        
+    
+        // Récupérer les jours de la semaine disponibles (isIsWork = true)
+    //     $daySchedule = $this->entityManager->getRepository(DaySchedule::class)->findBy(['isWork' => true]);
+    //     $currentDate = new DateTime();
+    // foreach ($daySchedule as $day) {
+    //     $dayOfWeek = $day->getDayOfWeek();
+    //     // Calculer le nombre de jours à ajouter pour atteindre ce jour de la semaine
+    //     $daysToAdd = ($dayOfWeek - $currentDate->format('N') + 7) % 7;
+    //     // Ajouter le nombre de jours
+    //     $day->date = $currentDate->add(new DateInterval('P'.$daysToAdd.'D'))->format('d-m-Y');
+    // }
         $form = $this->createForm(OrderType::class, null, [
             'user' => $this->getUser(),
-            'workingDays' => $this->entityManager->getRepository(WorkingDay::class)->findByAvailable(1),
             'timeSlots' => $this->entityManager->getRepository(TimeSlots::class)->findByIsFree(1),
-         
         ]);
         
         $session = $request->getSession();
@@ -48,16 +62,16 @@ class OrderController extends AbstractController
             'cart' => $cart->get(),
             'selected_formule' => $selected_formule,
             'selected_products' => $selected_products,
-            
         ]);
     }
-
+    
     #[Route('/commande/recapitulatif', name: 'app_order_recap')]
     public function add(Cart $cart, Request $request): Response
 {
     $order = new Order();
-    $workingDays = $this->entityManager->getRepository(WorkingDay::class)->findByAvailable(1);
-    $timeSlots = $this->entityManager->getRepository(TimeSlots::class)->findByIsFree(1);
+    // $workingDays = $this->entityManager->getRepository(WorkingDay::class)->findByAvailable(1);
+    // $timeSlots = $this->entityManager->getRepository(TimeSlots::class)->findByIsFree(1);
+    $daySchedule = $this->entityManager->getRepository(DaySchedule::class)->findByIsWork(1);
   
     $session = $request->getSession();
     
@@ -66,8 +80,9 @@ class OrderController extends AbstractController
     
     $form = $this->createForm(OrderType::class, $order, [
         'user' => $this->getUser(),
-        'workingDays' => $workingDays,
-        'timeSlots' => $timeSlots,
+        // 'workingDays' => $workingDays,
+        'daySchedule' => $daySchedule,
+        // 'timeSlots' => $timeSlots,
         'selected_formule' => $selected_formule,
         'selected_products' => $selected_products,
     ]);
@@ -80,8 +95,8 @@ class OrderController extends AbstractController
      
         // Récupérer les données du formulaire
         $deliveryAddress = $formData->getDeliveryAddress();
-        $deliveryDay = $formData->getDeliveryDay();
-        $deliveryHour = $formData->getDeliveryHour();
+        $daySchedule = $formData->getDeliveryDay();
+        // $deliveryHour = $formData->getDeliveryHour();
         $total = 0; // Initialiser le total à 0
 
         foreach ($selected_formule as $formuleArray) {
@@ -95,8 +110,8 @@ class OrderController extends AbstractController
 
 
         // Attribution des valeurs à l'objet Order
-        $order->setDeliveryDay($deliveryDay);
-        $order->setDeliveryHour($deliveryHour);
+        // $order->setDeliveryDay($deliveryDay);
+        // $order->setDeliveryHour($deliveryHour);
         $order->setDeliveryAddress(str_replace('[br]', ' ', $deliveryAddress));
         $order->setTotal($total);
         $order->setReference($date->format('dmY') . '-' . uniqid()); 
@@ -113,11 +128,12 @@ class OrderController extends AbstractController
 foreach ($selected_formule as $formuleData) {
     // Créer une nouvelle instance d'OrderDetails pour chaque formule
     $orderDetails = new OrderDetails();
-dd($selected_formule);
+
     // Récupérer les données de la formule
     $formule = $formuleData[0];
     $formuleName = $formule->getName();
     $formulePrice = $formule->getPrice();
+   
 
     // Définir les données de la formule dans OrderDetails
     $orderDetails->setFormule($formuleName);

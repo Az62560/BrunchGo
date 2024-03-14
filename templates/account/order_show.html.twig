@@ -5,10 +5,19 @@
 {% block main %}
 
     <h3>Formules commandées :</h3>
-    {% for index, formule in orderDetails %}
-        <h4>Formule {{ index + 1 }} : {{ formule.formule }}</h4>
-        <p>Produits associés : {{ formule.products }}</p>
-        <p>Prix de la formule : {{ (formule.price / 100)|number_format(2, ',', '.') }} €</p>
-    {% endfor %}
+    {% for index, orderDetail in orderDetails %}
+        <h4>Formule {{ index + 1 }} : {{ orderDetail.getFormule() }}</h4>
+        <p>Produits associés : {{ orderDetail.getProducts() }}</p>
+        <p>Prix de la formule : {{ (orderDetail.getPrice() / 100)|number_format(2, ',', '.') }} €</p>
     
+
+    {% endfor %}
+   {% for orderDetail in order.getOrderDetails() %}
+    {% set formule = orderDetail.getFormule() %}
+    <pre>
+        {{ dump(formule) }}
+    </pre>
+    {# <img src="/uploads/images/{{ formule.getIllustration() }}"> #}
+{% endfor %}
 {% endblock %}
+

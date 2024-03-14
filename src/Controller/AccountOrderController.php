@@ -2,14 +2,13 @@
 
 namespace App\Controller;
 
-use App\Classe\Cart;
+use App\Entity\Formules;
 use App\Entity\Order;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Serializer\SerializerInterface;
+
 
 class AccountOrderController extends AbstractController
 {
@@ -57,6 +56,7 @@ class AccountOrderController extends AbstractController
         return $this->render('account/order_show.html.twig', [
             'order' => $order,
             'reference' => $order->getReference(),
+            'all' => $this->entityManager->getRepository(Formules::class)->FindAll($reference),
             'orderDetails' => $orderDetails,
             'formuleData' => $formuleData,
             'productsData' => $productsData,

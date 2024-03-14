@@ -19,9 +19,9 @@ class WorkingDayCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         return [
-            TextField::new('dayOfWeek', 'Jours de livraion'),
+            TextField::new('dayOfWeek', 'Jours de livraison'),
             BooleanField::new('available', 'Disponible'),
-            // DateField::new('deliveryDate', 'Date de livraison'),
+            // DateField::new('dayOfWeek', 'Date de livraison'),
             AssociationField::new('timeSlots', 'Créneau horaire'),
         ];
     }
